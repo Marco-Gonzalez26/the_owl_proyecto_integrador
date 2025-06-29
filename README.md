@@ -1,3 +1,22 @@
-﻿# Proyecto Integrador - Web para la tienda The Owl
+﻿
+# Tienda para The Owl - Proyecto Integrador 5to Semestre
 
-## Modelo Vista Controlador
+Proyecto Integrador para el 5to Semestre de Ingenieria en Software. 
+
+
+
+
+## Autores
+
+- Marco Gonzalez
+- Emily Chiriboga
+- Doris Lopez
+
+## Tecnologías
+- PHP
+- MySQL
+- HTML
+- CSS
+- JavaScript
+- Bootstrap
+- Cloudinary
