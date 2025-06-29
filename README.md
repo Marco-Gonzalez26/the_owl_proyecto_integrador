@@ -1,5 +1,5 @@
 ﻿
-# Tienda para The Owl - Proyecto Integrador 5to Semestre
+# Tienda para The Owl 🦉- Proyecto Integrador 5to Semestre
 
 Proyecto Integrador para el 5to Semestre de Ingenieria en Software. 
 
