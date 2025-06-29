@@ -1,14 +1,14 @@
 <?php
-
+require_once __DIR__ . './env_var.php';
 
 
 class DbConnection
 {
   // Variables
-  private $host = 'localhost';
-  private $dbname = 'the_owl_proyecto_integrador';
-  private $user = 'root';
-  private $password = '';
+  private $host = DB_HOST;
+  private $dbname = DB_NAME;
+  private $user = DB_USER;
+  private $password = DB_PASS;
   private $connection;
   private static $instance = null;
   // Constructor
