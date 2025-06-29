@@ -30,6 +30,25 @@ switch ($pathName) {
 
     require __DIR__ . $viewDirectory . 'products/detail.php';
     break;
+  case '/admin/dashboard':
+    require __DIR__ . $viewDirectory . 'admin/dashboard.php';
+    break;
+  case '/admin/dashboard/create':
+    require __DIR__ . $viewDirectory . 'admin/create.php';
+    break;
+
+  case '/admin/dashboard/edit':
+    require __DIR__ . $viewDirectory . 'admin/edit.php';
+    break;
+  case '/admin/dashboard/create/products':
+    require __DIR__ . $viewDirectory . 'admin/php/create_product.php';
+    break;
+  case '/admin/dashboard/update/product':
+    require __DIR__ . $viewDirectory . 'admin/php/edit_product.php';
+    break;
+  case '/admin/dashboard/product/delete':
+    require __DIR__ . $viewDirectory . 'admin/php/delete_product.php';
+    break;
   default:
     http_response_code(404);
     require __DIR__ . $viewDirectory . 'error/404.php';

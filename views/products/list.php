@@ -1,30 +1,32 @@
 <?php
 require_once BASE_PATH . '/layouts/header.php';
 require_once BASE_PATH . '/controllers/ProductController.php';
-
+require_once BASE_PATH . '/controllers/CategoryController.php';
 $productController = new ProductController();
+$categoryController = new CategoryController();
 $products = $productController->listAllProducts();
+$categories = $categoryController->getAllCategories();
 
 ?>
 
 <section class="container my-5">
   <h2 class="mb-4 ">Nuestros Productos</h2>
 
-  <!-- 
+
   <div class="row mb-4">
     <div class="col-md-3">
       <label for="category" class="form-label">Categoría</label>
       <select class="form-select" id="category" onchange="applyFilters()">
         <option value="">Todas las categorías</option>
         <?php foreach ($categories as $category): ?>
-          <option value="<?= $category['Id'] ?>"
-            <?= ($_GET['category'] ?? '') == $category['id'] ? 'selected' : '' ?>>
-            <?= htmlspecialchars($category['name']) ?>
+          <option value="<?= $category['CategoriaId'] ?>"
+            <?= ($_GET['category'] ?? '') == $category['CategoriaId'] ? 'selected' : '' ?>>
+            <?= htmlspecialchars($category['Nombre']) ?>
           </option>
         <?php endforeach; ?>
       </select>
     </div>
-  </div> -->
+  </div>
 
   <!-- Listado de productos -->
   <div class="row">
@@ -69,6 +71,7 @@ require_once BASE_PATH . '/layouts/footer.php';
     width: 50%;
     object-fit: cover;
   }
+
   .card_body {
     flex-grow: 1;
     justify-content: center;
