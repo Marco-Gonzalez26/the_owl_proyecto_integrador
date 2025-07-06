@@ -1,30 +1,32 @@
 <?php
-require_once 'models/ProductModel.php';
+
 class ProductController
 {
-  private $productoModel;
+  private $productRepository;
+  private $errorHandler;
 
 
-  public function __construct()
+  public function __construct(ProductRepository $productRepository, ViewsErrorHandler $errorHandler)
   {
 
-    $this->productoModel = new ProductModel();
+    $this->productRepository = $productRepository;
+    $this->errorHandler = $errorHandler;
   }
 
 
   public function showProductById($productId)
   {
     try {
-      $product = $this->productoModel->getProductById($productId);
+      $product = $this->productRepository->getProductById($productId);
       if (!$product) {
-        require 'views/error/404.php';
+        $this->errorHandler->handleNotFound();
         return;
       }
 
       return $product;
     } catch (Exception $e) {
       error_log($e->getMessage());
-      require 'views/error/500.php';
+      $this->errorHandler->handleInternalServerError();
       return;
     }
   }
@@ -32,7 +34,7 @@ class ProductController
   public function listAllProducts()
   {
     try {
-      $products = $this->productoModel->getAllProducts();
+      $products = $this->productRepository->getAllProducts();
       return $products;
     } catch (Exception $e) {
       error_log($e->getMessage());
@@ -42,8 +44,8 @@ class ProductController
   public function createProduct($name, $description, $price, $stock, $imageUrl, $categoryId)
   {
     try {
-      if ($this->productoModel->insertProduct($name, $description, $price, $stock, $imageUrl, $categoryId)) {
-        return ['ProductoId' => $this->productoModel->productId];
+      if ($this->productRepository->insertProduct($name, $description, $price, $stock, $imageUrl, $categoryId)) {
+        return true;
       } else {
         return false;
       }
@@ -58,7 +60,7 @@ class ProductController
   public function updateProduct($productId, $name, $description, $price, $stock, $imageUrl, $categoryId)
   {
     try {
-      if ($this->productoModel->updateProduct($productId, $name, $description, $price, $stock, $imageUrl, $categoryId)) {
+      if ($this->productRepository->updateProduct($productId, $name, $description, $price, $stock, $imageUrl, $categoryId)) {
         return ['ProductoId' => $productId];
       } else {
         return false;
@@ -73,7 +75,7 @@ class ProductController
   public function deleteProduct($productId)
   {
     try {
-      if ($this->productoModel->deleteProduct($productId)) {
+      if ($this->productRepository->deleteProduct($productId)) {
         return true;
       } else {
         return false;

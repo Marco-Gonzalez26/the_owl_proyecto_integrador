@@ -1,7 +1,9 @@
 <?php
-require_once __DIR__ . '/../../../controllers/ProductController.php';
 
-$productController = new ProductController();
+$deps = require __DIR__ . '/../../config/bootstrap.php';
+
+
+$productController = $deps['productController'];
 $productId = $_GET['productId'] ?? null;
 
 if (!$productId) {

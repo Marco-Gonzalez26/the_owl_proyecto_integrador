@@ -1,9 +1,11 @@
 <?php
-require_once __DIR__ . '/../../../controllers/ProductController.php';
 require_once __DIR__ . '/../../../services/CloudinaryService.php';
+$deps = require __DIR__ . '/../../config/bootstrap.php';
 
-$productController = new ProductController();
-$cloudinaryService = new CloudinaryService();
+
+$productController = $deps['productController'];
+
+$cloudinaryService = $deps['cloudinary'];
 
 $productId = $_GET['productId'] ?? null;
 

@@ -5,15 +5,22 @@ require_once 'config/env_var.php';
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
 
-Configuration::instance([
-  'cloud' => [
-    'cloud_name' => CLOUDINARY_CLOUD_NAME,
-    'api_key' => CLOUDINARY_API_KEY,
-    'api_secret' => CLOUDINARY_API_SECRET
-  ],
-  'url' => [
-    'secure' => true
-  ]
-]);
+class CloudinaryConfig
+{
 
-return new UploadApi();
+  public function getCloudinaryUploadAPI()
+  {
+
+    Configuration::instance([
+      'cloud' => [
+        'cloud_name' => CLOUDINARY_CLOUD_NAME,
+        'api_key' => CLOUDINARY_API_KEY,
+        'api_secret' => CLOUDINARY_API_SECRET
+      ],
+      'url' => [
+        'secure' => true
+      ]
+    ]);
+    return new UploadApi();
+  }
+}

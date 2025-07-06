@@ -1,9 +1,10 @@
 <?php
 require_once BASE_PATH . '/layouts/header.php';
-require_once BASE_PATH . '/controllers/ProductController.php';
-require_once BASE_PATH . '/controllers/CategoryController.php';
-$productController = new ProductController();
+require_once BASE_PATH . '/config/bootstrap.php';
+$deps = require BASE_PATH . '/config/bootstrap.php';
+
 $categoryController = new CategoryController();
+$productController = $deps['productController'];
 $products = $productController->listAllProducts();
 $categories = $categoryController->getAllCategories();
 

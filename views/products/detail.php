@@ -1,12 +1,13 @@
 <?php
 
-require_once BASE_PATH . '/controllers/ProductController.php';
+require_once BASE_PATH . '/config/bootstrap.php';
 require_once BASE_PATH . '/layouts/header.php';
 
+$deps = require BASE_PATH . '/config/bootstrap.php';
 // Verificar si se ha pasado un ID de producto
 $productId = isset($_GET['id']) ? intval($_GET['id']) : 1; // Default to 1 if not set
 
-$productController = new ProductController();
+$productController = $deps['productController'];
 $product = $productController->showProductById($productId);
 
 ?>
@@ -54,7 +55,6 @@ $product = $productController->showProductById($productId);
 </div>
 
 <style>
-
-<?php
-require_once BASE_PATH . '/layouts/footer.php';
-?>
+  <?php
+  require_once BASE_PATH . '/layouts/footer.php';
+  ?>

@@ -1,21 +1,27 @@
 <?php
+
+require_once __DIR__ . '/../interfaces/ FileUploaderInterface.php';
 require_once __DIR__ . '/../config/cloudinary.php';
-class CloudinaryService
+class CloudinaryService implements FileUploaderInterface
 {
 
   private $uploadApi;
   public function __construct()
   {
-    $this->uploadApi = require __DIR__ . '/../config/cloudinary.php';
+    $this->uploadApi = new CloudinaryConfig()->getCloudinaryUploadAPI();
   }
-  public function uploadImage($file)
+  public function uploadImage($file, $options = [])
   {
-    $result = $this->uploadApi->upload($file, [
+    $defaultOptions = [
       'folder' => 'the_owl',
       'resource_type' => 'image',
       'overwrite' => true,
       'use_filename' => true
-    ]);
+    ];
+
+    $combinedOptions = array_merge($defaultOptions, $options);
+
+    $result = $this->uploadApi->upload($file, $combinedOptions);
 
     return $result['secure_url'] ?? null;
   }
