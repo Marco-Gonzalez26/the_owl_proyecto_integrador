@@ -20,3 +20,12 @@ Proyecto Integrador para el 5to Semestre de Ingenieria en Software.
 - JavaScript
 - Bootstrap
 - Cloudinary
+
+## Aplicacion de principios SOLID en progreso
+- [x] ProductController
+- [x] ProductModel
+- [x] ProductRepository
+- [x] ProductFactory 
+- [ ] CategoryModel
+- [ ] CategoryFactory
+- [ ] CategoriesController 
