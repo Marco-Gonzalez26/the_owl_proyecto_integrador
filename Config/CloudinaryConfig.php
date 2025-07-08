@@ -1,6 +1,11 @@
 <?php
+
+namespace Config;
+
+
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once 'config/env_var.php';
+require_once dirname(__DIR__) . '/Config/env.php';
+
 
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;

@@ -1,8 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../interfaces/ FileUploaderInterface.php';
-require_once __DIR__ . '/../config/cloudinary.php';
-class CloudinaryService implements FileUploaderInterface
+namespace Services;
+
+use Interfaces\CloudinaryServiceInterface;
+use Config\CloudinaryConfig;
+
+class CloudinaryService implements CloudinaryServiceInterface
 {
 
   private $uploadApi;

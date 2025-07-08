@@ -2,6 +2,15 @@
   "require": {
     "cloudinary/cloudinary_php": "^2",
     "vlucas/phpdotenv": "^5.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Config\\": "c:/xampp/htdocs/apps/theowl/Config/",
+      "Controllers\\": "c:/xampp/htdocs/apps/theowl/Controllers/",
+      "Models\\": "c:/xampp/htdocs/apps/theowl/Models/",
+      "Services\\": "c:/xampp/htdocs/apps/theowl/Services/",
+      "Interfaces\\": "c:/xampp/htdocs/apps/theowl/Interfaces/",
+      "Repositories\\": "c:/xampp/htdocs/apps/theowl/Repositories/"
+    }
   }
-
 }

@@ -1,5 +1,8 @@
 <?php
-interface FileUploaderInterface
+
+namespace Interfaces;
+
+interface CloudinaryServiceInterface
 {
   public function uploadImage($file, array $options = []);
 }

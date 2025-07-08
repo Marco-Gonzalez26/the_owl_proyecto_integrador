@@ -1,8 +1,23 @@
 <?php
-class ProductRepository
+
+namespace Repositories;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+
+use PDO;
+use Exception;
+use Interfaces\ProductRepositoryInterface;
+use Models\Product;
+
+class ProductRepository implements ProductRepositoryInterface
 {
-  public function __construct(private PDO $connection) {}
-  public function getAllProducts()
+  private $connection;
+  public function __construct(PDO $connection)
+  {
+    $this->connection = $connection;
+  }
+  public function getAll(): array
   {
     $query = "SELECT p.ProductoId, p.Nombre, p.Descripcion, p.Precio, p.Stock, p.Imagen, p.CategoriaId, c.Nombre as NombreCategoria
                   FROM productos p
@@ -20,7 +35,7 @@ class ProductRepository
     return $products;
   }
 
-  public function getProductById($productId)
+  public function getById(int $id): array
   {
     $query = "SELECT p.*, c.Nombre as NombreCategoria
                FROM productos p
@@ -28,14 +43,21 @@ class ProductRepository
                WHERE p.ProductoID = :productId";
 
     $dbQuery = $this->connection->prepare($query);
-    $dbQuery->bindParam(':productId', $productId, PDO::PARAM_INT);
+    $dbQuery->bindParam(':productId', $id, PDO::PARAM_INT);
     $dbQuery->execute();
     $product = $dbQuery->fetch(PDO::FETCH_ASSOC);
-    return $product;
+    return $product ?: [];
   }
 
-  public function insertProduct($name, $description, $price, $stock, $imageUrl, $categoryId)
+  public function create(Product $data): bool
   {
+    $name = $data->name;
+    $description = $data->description;
+    $price = $data->price;
+    $stock = $data->stock;
+    $categoryId = $data->categoryId;
+    $imageUrl = $data->imageUrl;
+
     if (empty($name) || empty($description) || $price <= 0 || $stock < 0 || empty($imageUrl) || $categoryId <= 0) {
       throw new Exception("Todos los campos son obligatorios y deben ser válidos.");
     }
@@ -52,12 +74,20 @@ class ProductRepository
     return $dbQuery->execute();
   }
 
-  public function updateProduct($productId, $name, $description, $price, $stock, $imageUrl, $categoryId)
+  public function update(int $id, Product $data): bool
   {
-    $query = "UPDATE productos SET Nombre = :name, Descripcion = :description, Precio = :price, Stock = :stock, Imagen = :imageUrl, CategoriaId = :categoryId WHERE ProductoId = :productId";
+    $name = $data->name;
+    $description = $data->description;
+    $price = $data->price;
+    $stock = $data->stock;
+    $categoryId = $data->categoryId;
+    $imageUrl = $data->imageUrl;
+
     if (empty($name) || empty($description) || $price <= 0 || $stock < 0 || empty($imageUrl) || $categoryId <= 0) {
       return false;
     }
+
+    $query = "UPDATE productos SET Nombre = :name, Descripcion = :description, Precio = :price, Stock = :stock, Imagen = :imageUrl, CategoriaId = :categoryId WHERE ProductoId = :productId";
 
     $dbQuery = $this->connection->prepare($query);
     $dbQuery->bindParam(':name', $name, PDO::PARAM_STR);
@@ -66,15 +96,15 @@ class ProductRepository
     $dbQuery->bindParam(':stock', $stock, PDO::PARAM_INT);
     $dbQuery->bindParam(':imageUrl', $imageUrl, PDO::PARAM_STR);
     $dbQuery->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);
-    $dbQuery->bindParam(':productId', $productId, PDO::PARAM_INT);
+    $dbQuery->bindParam(':productId', $id, PDO::PARAM_INT);
     return $dbQuery->execute();
   }
 
-  public function deleteProduct($productId)
+  public function delete(int $id): bool
   {
     $query = "DELETE FROM productos WHERE ProductoId = :productId";
     $dbQuery = $this->connection->prepare($query);
-    $dbQuery->bindParam(':productId', $productId, PDO::PARAM_INT);
+    $dbQuery->bindParam(':productId', $id, PDO::PARAM_INT);
     return $dbQuery->execute();
   }
 }

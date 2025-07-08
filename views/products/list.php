@@ -1,12 +1,5 @@
 <?php
-require_once BASE_PATH . '/layouts/header.php';
-require_once BASE_PATH . '/config/bootstrap.php';
-$deps = require BASE_PATH . '/config/bootstrap.php';
-
-$categoryController = new CategoryController();
-$productController = $deps['productController'];
-$products = $productController->listAllProducts();
-$categories = $categoryController->getAllCategories();
+require_once __DIR__ . '/../../Layouts/header.php';
 
 ?>
 
@@ -15,8 +8,8 @@ $categories = $categoryController->getAllCategories();
 
 
   <div class="row mb-4">
-    <div class="col-md-3">
-      <label for="category" class="form-label">Categoría</label>
+    <div class="col-md-3 categories-container">
+      <label for="category" class="form-label">Categoría:</label>
       <select class="form-select" id="category" onchange="applyFilters()">
         <option value="">Todas las categorías</option>
         <?php foreach ($categories as $category): ?>
@@ -47,7 +40,7 @@ $categories = $categoryController->getAllCategories();
               <h5 class="card-title"><?= htmlspecialchars($product['Nombre']) ?></h5>
             </div>
             <div class="card-footer bg-white">
-              <a href="apps/theowl/products/detail?id=<?= $product['ProductoId'] ?>" class="btn btn-primary w-100">Ver Detalles</a>
+              <a href="/apps/theowl/public/products/detail?id=<?= $product['ProductoId'] ?>" class="btn btn-primary w-100">Ver Detalles</a>
             </div>
           </div>
         </div>
@@ -56,9 +49,24 @@ $categories = $categoryController->getAllCategories();
   </div>
 </section>
 <?php
-require_once BASE_PATH . '/layouts/footer.php';
+require_once __DIR__ . '/../../Layouts/footer.php';
 ?>
 <style>
+  .categories-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  label {
+    font-weight: 500;
+  }
+
+  select {
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+
   .product-card {
     width: 100%;
     height: 100%;

@@ -1,90 +1,53 @@
 <?php
 
+namespace Controllers;
+
+use Interfaces\ProductServiceInterface;
+use Models\Product;
+
 class ProductController
 {
-  private $productRepository;
+  private $service;
   private $errorHandler;
 
 
-  public function __construct(ProductRepository $productRepository, ViewsErrorHandler $errorHandler)
+  public function __construct(ProductServiceInterface $service)
   {
 
-    $this->productRepository = $productRepository;
-    $this->errorHandler = $errorHandler;
+    $this->service = $service;
   }
 
 
   public function showProductById($productId)
   {
-    try {
-      $product = $this->productRepository->getProductById($productId);
-      if (!$product) {
-        $this->errorHandler->handleNotFound();
-        return;
-      }
-
-      return $product;
-    } catch (Exception $e) {
-      error_log($e->getMessage());
-      $this->errorHandler->handleInternalServerError();
-      return;
-    }
+    $product = $this->service->find($productId);
+    require __DIR__ . '/../views/products/detail.php';
   }
 
-  public function listAllProducts()
+  public function showAllProducts()
   {
-    try {
-      $products = $this->productRepository->getAllProducts();
-      return $products;
-    } catch (Exception $e) {
-      error_log($e->getMessage());
-    }
+    $products = $this->service->findAll();
+    require __DIR__ . '/../views/products/list.php';
   }
 
   public function createProduct($name, $description, $price, $stock, $imageUrl, $categoryId)
   {
-    try {
-      if ($this->productRepository->insertProduct($name, $description, $price, $stock, $imageUrl, $categoryId)) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (Exception $e) {
-      // Log the error message
-      error_log($e->getMessage());
-      echo "<script>alert('Error al crear el producto: " . $e->getMessage() . "');</script>";
-      return false;
-    }
+    $productToAdd = new Product($name, $description, $price, $categoryId, $stock, $imageUrl);
+
+    $this->service->create($productToAdd);
+    header("Location:/admin/products");
   }
 
   public function updateProduct($productId, $name, $description, $price, $stock, $imageUrl, $categoryId)
   {
-    try {
-      if ($this->productRepository->updateProduct($productId, $name, $description, $price, $stock, $imageUrl, $categoryId)) {
-        return ['ProductoId' => $productId];
-      } else {
-        return false;
-      }
-    } catch (Exception $e) {
-      // Log the error message
-      error_log($e->getMessage());
-      echo "<script>alert('Error al actualizar el producto: " . $e->getMessage() . "');</script>";
-      return false;
-    }
+    $productToUpdate = new Product($name, $description, $price, $categoryId, $stock, $imageUrl);
+
+    $this->service->update($productId, $productToUpdate);
+    header("Location:/admin/products");
   }
   public function deleteProduct($productId)
   {
-    try {
-      if ($this->productRepository->deleteProduct($productId)) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (Exception $e) {
-      // Log the error message
-      error_log($e->getMessage());
-      echo "<script>alert('Error al eliminar el producto: " . $e->getMessage() . "');</script>";
-      return false;
-    }
+    $this->service->delete($productId);
+    header("Location:/admin/products");
   }
 }

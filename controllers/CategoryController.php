@@ -1,23 +1,27 @@
 <?php
-require_once BASE_PATH . '/models/CategoryModel.php';
+
+namespace Controllers;
+
+use Interfaces\CategoryServiceInterface;
+
 class CategoryController
 {
-  private $categoryModel;
 
-  public function __construct()
+  private $service;
+  public function __construct(CategoryServiceInterface $service)
   {
-    $this->categoryModel = new CategoryModel();
+    $this->service = $service;
   }
 
-  public function getAllCategories()
+  public function showAll()
   {
-    $categories = $this->categoryModel->getAllCategories();
-    return $categories;
+    $categories = $this->service->findAll();
+    require __DIR__ . '/../views/categories/list.php';
   }
 
   public function getCategoryById($categoryId)
   {
-    $category = $this->categoryModel->getCategoryById($categoryId);
-    return $category;
+    $category = $this->service->find($categoryId);
+    require __DIR__ . '/../views/categories/detail.php';
   }
 }

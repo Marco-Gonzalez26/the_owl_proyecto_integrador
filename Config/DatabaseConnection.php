@@ -1,8 +1,15 @@
 <?php
-require_once __DIR__ . './env_var.php';
 
+namespace Config;
 
-class DbConnection
+require_once __DIR__ . '/../vendor/autoload.php';
+
+require_once dirname(__DIR__) . '/Config/env.php';
+
+use PDO;
+use PDOException;
+
+class DatabaseConnection
 {
   // Variables
   private $host = DB_HOST;
@@ -39,7 +46,7 @@ class DbConnection
   public static function getInstance()
   {
     if (self::$instance === null) {
-      self::$instance = new DbConnection();
+      self::$instance = new DatabaseConnection();
     }
     return self::$instance;
   }
