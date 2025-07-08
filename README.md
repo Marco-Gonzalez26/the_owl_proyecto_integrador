@@ -1,10 +1,6 @@
-﻿
-# Tienda para The Owl 🦉- Proyecto Integrador 5to Semestre
+﻿# Tienda para The Owl 🦉- Proyecto Integrador 5to Semestre
 
-Proyecto Integrador para el 5to Semestre de Ingenieria en Software. 
-
-
-
+Proyecto Integrador para el 5to Semestre de Ingenieria en Software.
 
 ## Autores
 
@@ -13,6 +9,7 @@ Proyecto Integrador para el 5to Semestre de Ingenieria en Software.
 - Doris Lopez
 
 ## Tecnologías
+
 - PHP
 - MySQL
 - HTML
@@ -22,10 +19,35 @@ Proyecto Integrador para el 5to Semestre de Ingenieria en Software.
 - Cloudinary
 
 ## Aplicacion de principios SOLID en progreso
+
 - [x] ProductController
 - [x] ProductModel
 - [x] ProductRepository
-- [x] ProductFactory 
-- [ ] CategoryModel
-- [ ] CategoryFactory
-- [ ] CategoriesController 
+- [x] ProductService
+- [x] CategoryModel
+- [x] CategoryRepository
+- [x] CategoryService
+- [x] CategoryController
+
+// ...
+
+## Arquitectura del proyecto
+
+MVC (Modelo Vista Controlador)
+
+## Estructura de directorios
+
+```.
+├── composer.json
+├── composer.lock
+├── Config
+├── Controllers
+├── Interfaces
+├── Models
+├── Repositories
+├── Services
+├── index.php
+├── README.md
+└── views
+└── public
+```
