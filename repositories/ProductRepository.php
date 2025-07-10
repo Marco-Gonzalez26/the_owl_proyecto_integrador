@@ -29,9 +29,7 @@ class ProductRepository implements ProductRepositoryInterface
       while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $products[] = $row;
       }
-    } else {
-      echo "No se encontraron productos.";
-    }
+    } 
     return $products;
   }
 
