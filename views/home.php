@@ -1,5 +1,5 @@
 <?php
-require_once  BASE_PATH . '.\layouts\header.php';
+require_once  __DIR__ . '/../Layouts/header.php';
 ?>
 <h1 id="home-title">Bienvenido a The Owl</h1>
 <p>Tu tienda que tiene todo lo que buscas!</p>
