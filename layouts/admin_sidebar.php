@@ -2,12 +2,12 @@
   <div class="sidebar-sticky">
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a class="nav-link" href="/apps/theowl/products">
+        <a class="nav-link" href="/apps/theowl/public/products">
 
           Pagina Web
         </a>
       <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="/apps/theowl/admin/dashboard">Panel de control</a>
+        <a class="nav-link active" aria-current="page" href="/apps/theowl/public/admin/dashboard">Panel de control</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/apps/theowl/admin/products">Productos</a>

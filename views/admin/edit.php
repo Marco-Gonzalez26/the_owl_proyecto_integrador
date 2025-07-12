@@ -1,22 +1,5 @@
 <?php require_once __DIR__ . '/../../layouts/admin_header.php';
 
-require_once __DIR__ . '/../../controllers/ProductController.php';
-require_once __DIR__ . '/../../controllers/CategoryController.php';
-
-$productController = new ProductController();
-$categoryController = new CategoryController();
-$tableToEdit = $_GET['identifier'] ?? 'products';
-$id = $_GET['id'] ?? null;
-
-$product = $productController->showProductById($id);
-
-$categories = $categoryController->getAllCategories();
-
-if (!$product) {
-  require_once __DIR__ . '/../../views/error/404.php';
-  exit;
-}
-
 ?>
 
 <div class="container-fluid">
@@ -30,7 +13,7 @@ if (!$product) {
         <div class="alert alert-success">Producto <?= htmlspecialchars($_GET['success']) ?> correctamente</div>
       <?php endif; ?>
 
-      <form action="/apps/theowl/admin/dashboard/update/product?productId=<?= $product['ProductoId'] ?>" method="POST" enctype="multipart/form-data">
+      <form action="/apps/theowl/public/admin/dashboard/update/product?productId=<?= $product['ProductoId'] ?>" method="POST" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre del Producto</label>
           <input type="text" class="form-control" id="nombre" name="nombre" value="<?= htmlspecialchars($product['Nombre']) ?>">

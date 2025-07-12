@@ -1,9 +1,6 @@
-<?php require_once __DIR__ . '/../../layouts/admin_header.php'; ?>
 <?php
-require_once __DIR__ . '/../../controllers/ProductController.php';
+require_once __DIR__ . '/../../layouts/admin_header.php';
 
-$productController = new ProductController();
-$products = $productController->listAllProducts();
 ?>
 <div class="container-fluid">
   <div class="row">
@@ -11,7 +8,7 @@ $products = $productController->listAllProducts();
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <h2>Productos</h2>
-      <a href="/apps/theowl/admin/dashboard/create" class="btn btn-primary mb-3">Nuevo Producto</a>
+      <a href="/apps/theowl/public/admin/dashboard/create" class="btn btn-primary mb-3">Nuevo Producto</a>
 
 
       <div class="table-responsive">
@@ -36,8 +33,8 @@ $products = $productController->listAllProducts();
                 <td><?= htmlspecialchars($product['Nombre']) ?></td>
                 <td>$<?= number_format($product['Precio'], 2) ?></td>
                 <td>
-                  <a href="/apps/theowl/admin/dashboard/edit?identifier=products&id=<?= $product['ProductoId'] ?>" class="btn btn-sm btn-info">Editar</a>
-                  <form action="/apps/theowl/admin/dashboard/product/delete?identifier=products&productId=<?= $product['ProductoId'] ?>" method="POST" class="d-inline">
+                  <a href="/apps/theowl/public/admin/dashboard/edit?identifier=products&id=<?= $product['ProductoId'] ?>" class="btn btn-sm btn-info">Editar</a>
+                  <form action="/apps/theowl/public/admin/dashboard/product/delete?identifier=products&productId=<?= $product['ProductoId'] ?>" method="POST" class="d-inline">
                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este producto?')">Eliminar</button>
                   </form>
                 </td>

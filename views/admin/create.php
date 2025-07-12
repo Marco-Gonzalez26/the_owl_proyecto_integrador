@@ -1,11 +1,5 @@
 <?php require_once __DIR__ . '/../../layouts/admin_header.php';
 
-require_once __DIR__ . '/../../controllers/ProductController.php';
-require_once __DIR__ . '/../../controllers/CategoryController.php';
-
-$productController = new ProductController();
-$categoryController = new CategoryController();
-$table = $_GET['identifier'] ?? 'products';
 
 ?>
 
@@ -20,7 +14,7 @@ $table = $_GET['identifier'] ?? 'products';
         <div class="alert alert-success">Registro <?= htmlspecialchars($_GET['success']) ?> correctamente</div>
       <?php endif; ?>
       <?php if ($table === 'products'): ?>
-        <form action="/apps/theowl/admin/dashboard/create/products" method="POST" enctype="multipart/form-data">
+        <form action="/apps/theowl/public/admin/dashboard/create/product" method="POST" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="name" class="form-label">Nombre</label>
             <input type="text" class="form-control" id="name" name="nombre" required>
@@ -43,7 +37,7 @@ $table = $_GET['identifier'] ?? 'products';
               <label for="category" class="form-label mt-2">Categoría</label>
               <select class="form-select mt-2 w-100" id="category" name="categoria">
                 <option value="">Seleccionar categoría</option>
-                <?php foreach ($categoryController->getAllCategories() as $category): ?>
+                <?php foreach ($categories as $category): ?>
                   <option value="<?= $category['CategoriaId'] ?>"><?= htmlspecialchars($category['Nombre']) ?></option>
                 <?php endforeach; ?>
               </select>

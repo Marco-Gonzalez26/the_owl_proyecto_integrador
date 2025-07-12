@@ -8,6 +8,7 @@
     "psr-4": {
       "Config\\": "c:/xampp/htdocs/apps/theowl/Config/",
       "Controllers\\": "c:/xampp/htdocs/apps/theowl/Controllers/",
+      "Controllers\\Admin\\": "c:/xampp/htdocs/apps/theowl/Controllers/Admin/",
       "Models\\": "c:/xampp/htdocs/apps/theowl/Models/",
       "Services\\": "c:/xampp/htdocs/apps/theowl/Services/",
       "Interfaces\\": "c:/xampp/htdocs/apps/theowl/Interfaces/",
