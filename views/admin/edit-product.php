@@ -1,8 +1,7 @@
-<?php require_once __DIR__ . '/../../layouts/admin_header.php';
-
+<?php
+ob_start();
 ?>
-
-<div class="container-fluid">
+<div class="container h-100">
   <div class="row">
     <?php require_once __DIR__ . '/../../layouts/admin_sidebar.php'; ?>
 
@@ -54,8 +53,11 @@
 
   </div>
 </div>
-
-<?php require_once __DIR__ . '/../../layouts/admin_footer.php'; ?>
+<?php
+$content = ob_get_clean();
+$layoutData = ['title' => 'Editar Producto'];
+require __DIR__ . '/../../Layouts/layout.php';
+?>
 <style>
   .container-fluid {
     padding: 20px;

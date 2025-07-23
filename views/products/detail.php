@@ -1,24 +1,19 @@
 <?php
 
 
-require_once __DIR__ . '/../../Layouts/header.php';
-
-
-// Verificar si se ha pasado un ID de producto
-$productId = isset($_GET['id']) ? intval($_GET['id']) : 1; // Default to 1 if not set
-
+ob_start()
 
 
 ?>
 
-<div class="container my-5">
+<div class="container-fluid my-5">
   <h2 class="mb-4">Detalles del Producto</h2>
   <div class="row">
     <!-- Imágenes del producto -->
     <div class="col-md-6">
-      <div class="main-image mb-3">
+      <div class="mb-3">
         <img src="<?= htmlspecialchars($product['Imagen']) ?>"
-          class="img-fluid rounded"
+          class="img-thumbnail rounded w-50"
           alt="<?= htmlspecialchars($product['Nombre']) ?>">
       </div>
     </div>
@@ -50,10 +45,20 @@ $productId = isset($_GET['id']) ? intval($_GET['id']) : 1; // Default to 1 if no
       <h4>Descripción</h4>
       <p class="lead"><?= nl2br(htmlspecialchars($product['Descripcion'])) ?></p>
     </div>
+    <!-- Fin de la información del producto -->
+    <div>
+      <input hidden type="text" id="productId" value="<?= $product['ProductoId'] ?>">
+      <input hidden type="text" id="name" value="<?= htmlspecialchars($product['Nombre']) ?>">
+      <input hidden type="text" id="price" value="<?= number_format($product['Precio'], 2) ?>">
+      <input type="number" id="quantity" class="form-control w-25" value="1" min="1">
+      <input hidden type="text" id="imageUrl" value="<?= htmlspecialchars($product['Imagen']) ?>">
+      <button class="btn btn-primary" id="add-to-cart-btn">Añadir al carrito</button>
+    </div>
   </div>
 </div>
 
-<style>
-  <?php
-  require_once __DIR__ . '/../../Layouts/footer.php';
-  ?>
+<?php
+$content = ob_get_clean();
+$layoutData = ['title' => 'Producto'];
+require __DIR__ . '/../../layouts/layout.php';
+?>

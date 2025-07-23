@@ -26,7 +26,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
   public function getById(int $id): array
   {
-    $query = "SELECT CategoriaId, Nombre FROM Categorias WHERE CategoriaId = :categoryId";
+    $query = "SELECT CategoriaId, Nombre FROM Categorias WHERE CategoriaId = :categoryId AND Estado = 1";
     $dbQuery = $this->connection->prepare($query);
     $dbQuery->bindParam(':categoryId', $id, PDO::PARAM_INT);
     $dbQuery->execute();
@@ -37,34 +37,27 @@ class CategoryRepository implements CategoryRepositoryInterface
   public function create(Category $data): bool
   {
     $name = $data->name;
-    $description = $data->description;
 
-    if (empty($name) || empty($description)) {
+    if (empty($name)) {
       throw new Exception("Todos los campos son obligatorios y deben ser válidos.");
     }
-    $query = "INSERT INTO categorias (Nombre, Descripcion)
-              VALUES (:name, :description)";
+    $query = "INSERT INTO categorias (Nombre, Estado)
+              VALUES (:name, 1)";
 
     $dbQuery = $this->connection->prepare($query);
     $dbQuery->bindParam(':name', $name, PDO::PARAM_STR);
-    $dbQuery->bindParam(':description', $description, PDO::PARAM_STR);
+
     return $dbQuery->execute();
   }
 
   public function update(int $id, Category $data): bool
   {
     $name = $data->name;
-    $description = $data->description;
 
-    if (empty($name) || empty($description)) {
-      throw new Exception("Todos los campos son obligatorios y deben ser válidos.");
-    }
-
-    $query = "UPDATE categorias SET Nombre = :name, Descripcion = :description WHERE CategoriaId = :categoryId";
+    $query = "UPDATE categorias SET Nombre = :name  WHERE CategoriaId = :categoryId";
 
     $dbQuery = $this->connection->prepare($query);
     $dbQuery->bindParam(':name', $name, PDO::PARAM_STR);
-    $dbQuery->bindParam(':description', $description, PDO::PARAM_STR);
     $dbQuery->bindParam(':categoryId', $id, PDO::PARAM_INT);
     return $dbQuery->execute();
   }
@@ -72,7 +65,7 @@ class CategoryRepository implements CategoryRepositoryInterface
   public function delete(int $id): bool
   {
 
-    $query = "DELETE FROM categorias WHERE CategoriaId = :categoryId";
+    $query = "UPDATE categorias SET Estado = 0 WHERE CategoriaId = :categoryId";
 
     $dbQuery = $this->connection->prepare($query);
     $dbQuery->bindParam(':categoryId', $id, PDO::PARAM_INT);

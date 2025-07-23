@@ -29,13 +29,12 @@
           </div>
           <div class="form-flex mb-3 ">
             <div class="w-50">
-
               <label for="stock" class="form-label ">Stock</label>
               <input type="number" class="form-control w-100" id="stock" name="stock" required>
             </div>
             <div class="w-50">
-              <label for="category" class="form-label mt-2">Categoría</label>
-              <select class="form-select mt-2 w-100" id="category" name="categoria">
+              <label for="categoria" class="form-label mt-2">Categoría</label>
+              <select class="form-select mt-2 w-100" id="categoria" name="categoria" required>
                 <option value="">Seleccionar categoría</option>
                 <?php foreach ($categories as $category): ?>
                   <option value="<?= $category['CategoriaId'] ?>"><?= htmlspecialchars($category['Nombre']) ?></option>

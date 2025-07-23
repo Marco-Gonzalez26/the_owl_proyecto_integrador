@@ -1,8 +1,6 @@
 <?php
-require_once __DIR__ . '/../../Layouts/header.php';
-
+ob_start();
 ?>
-
 <section class="container my-5">
   <h2 class="mb-4 text-body">Nuestros Productos</h2>
 
@@ -21,35 +19,69 @@ require_once __DIR__ . '/../../Layouts/header.php';
       </select>
     </div>
   </div>
-
-  <!-- Listado de productos -->
-  <div class="row gap-4 ">
+  <div class="row g-4">
     <?php if (empty($products)): ?>
       <div class="col-12 text-center py-5">
         <h4>No se encontraron productos</h4>
         <p>Intenta con otros criterios de filtrado</p>
       </div>
     <?php else: ?>
-      <?php foreach ($products as $product): ?>
-        <div class="col-md-2 mb-4 card ">
-          <img src="<?= htmlspecialchars($product['Imagen']) ?>"
-            class="card-img-bottom img-fluid rounded"
-            alt="<?= htmlspecialchars($product['Nombre']) ?>">
-          <div class="card-body ">
-            <h5 class="card-title"><?= htmlspecialchars($product['Nombre']) ?></h5>
-          </div>
-          <div class="card-footer bg-white">
-            <a href="/apps/theowl/public/products/detail?id=<?= $product['ProductoId'] ?>" class="btn btn-primary w-100">Ver Detalles</a>
-          </div>
+      <div class="col-lg-9 mt-4">
+        <div class="row g-4">
+          <?php foreach ($products as $product): ?>
+            <div class="col-md-4 ">
+              <div class="product-card shadow-sm">
+                <div class="position-relative">
+                  <img src="<?= htmlspecialchars($product['Imagen']) ?>" class="product-image w-100 object-fit-scale" alt="<?= htmlspecialchars($product['Nombre']) ?>">
+                </div>
+                <div class="p-3">
+                  <span class="category-badge mb-2 d-inline-block"><?= htmlspecialchars($product['NombreCategoria']) ?></span>
+                  <h6 class="mb-1"><?= htmlspecialchars($product['Nombre']) ?></h6>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="price"><?= htmlspecialchars($product['Precio']) ?>$</span>
+
+                    <a class="btn btn-primary" href="/apps/theowl/public/products/detail?id=<?= $product['ProductoId'] ?>">
+                      Ver detalles
+                    </a>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
         </div>
-      <?php endforeach; ?>
-    <?php endif; ?>
+      </div>
   </div>
 </section>
-<?php
-require_once __DIR__ . '/../../Layouts/footer.php';
-?>
 <style>
+  .price {
+    color: #2563eb;
+    font-weight: 600;
+  }
+
+  .category-badge {
+    background-color: #2563eb;
+    color: #fff;
+    padding: .25em .50em;
+    font-size: 12px;
+    border-radius: 12px;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 12px;
+    height: 100%;
+  }
+
+
+  .product-image {
+    height: 200px;
+    object-fit: scale-down;
+    border-radius: 12px 12px 0 0;
+    z-index: 0;
+  }
+
   label {
     font-weight: 500;
   }
@@ -63,3 +95,8 @@ require_once __DIR__ . '/../../Layouts/footer.php';
     border-radius: 5px;
   }
 </style>
+<?php
+$content = ob_get_clean();
+$layoutData = ['title' => 'Productos'];
+require __DIR__ . '/../../layouts/layout.php';
+?>

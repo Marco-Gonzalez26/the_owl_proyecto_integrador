@@ -3,6 +3,7 @@
 namespace Repositories;
 
 use Exception;
+use Models\Role;
 use Models\User;
 use Interfaces\UserRepositoryInterface;
 use PDO;
@@ -31,27 +32,29 @@ class UserRepository implements UserRepositoryInterface
 
     $dbQuery = $this->connection->prepare($query);
     $dbQuery->bindParam(':userId', $id, PDO::PARAM_INT);
+    $dbQuery->execute();
     $user = $dbQuery->fetch(PDO::FETCH_ASSOC);
     return $user  ?: [];
   }
 
   public function getByUsername(string $username): ?User
   {
-    $query = "SELECT u.id, u.nombre_usuario, u.contrasena, r.id, r.Nombre as NombreRole 
-    WHERE nombre_usuarios = :username;";
+    $query = "SELECT u.id, u.nombre_usuario, u.contrasena, r.id, r.Nombre as NombreRol, r.Id as IdRol
+              FROM usuarios u
+              JOIN roles r ON u.rol = r.id WHERE u.nombre_usuario = :username;";
 
     $dbQuery = $this->connection->prepare($query);
 
     $dbQuery->bindParam(":username", $username, PDO::PARAM_STR);
-
-    $user = $dbQuery->fetch();
-
+    $dbQuery->execute();
+    $user = $dbQuery->fetch(PDO::FETCH_ASSOC);
+    $userRole = new Role($user["NombreRol"], $user["IdRol"]);
     if ($user) {
       return new User(
         (int) $user["id"],
         $user["nombre_usuario"],
         $user["contrasena"],
-        $user["role"]
+        $userRole
       );
     } else {
       return null;

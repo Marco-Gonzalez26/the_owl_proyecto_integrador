@@ -1,9 +1,13 @@
-
 RewriteEngine On
-RewriteBase /apps/theowl/public/
+RewriteBase /apps/theowl/public
 
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^([a-zA-Z0-9_-]+)/?$ $1.php [L]
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+RewriteRule ^admin/login$ index.php [L]
+
+RewriteRule ^ index.php [L]

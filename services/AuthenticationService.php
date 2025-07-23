@@ -18,6 +18,7 @@ class AuthenticationService implements AuthenticationServicieInterface
   public function login(string $username, string $password): bool
   {
     $user = $this->userRepository->getByUsername($username);
+
     if ($user && password_verify($password, $user->password)) {
       $_SESSION['user'] = $user;
       return true;

@@ -2,13 +2,17 @@
 require_once __DIR__ . '/../../layouts/admin_header.php';
 
 ?>
-<div class="container-fluid">
-  <div class="row">
+<div class="container h-100">
+  <div class="row h-100">
     <?php require_once __DIR__ . '/../../layouts/admin_sidebar.php'; ?>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <h2>Productos</h2>
-      <a href="/apps/theowl/public/admin/dashboard/create" class="btn btn-primary mb-3">Nuevo Producto</a>
+      <h1 class="fs-2 mb-4">Panel de control</h1>
+      <div class="d-flex gap-2 flex-row w-100 justify-content-between">
+
+        <h3 class="fs-4">Productos</h3>
+        <a href="/apps/theowl/public/admin/dashboard/create" class="btn btn-primary mb-3 fw-semibold">Nuevo Producto</a>
+      </div>
 
 
       <div class="table-responsive">
@@ -33,9 +37,42 @@ require_once __DIR__ . '/../../layouts/admin_header.php';
                 <td><?= htmlspecialchars($product['Nombre']) ?></td>
                 <td>$<?= number_format($product['Precio'], 2) ?></td>
                 <td>
-                  <a href="/apps/theowl/public/admin/dashboard/edit?identifier=products&id=<?= $product['ProductoId'] ?>" class="btn btn-sm btn-info">Editar</a>
+                  <a href="/apps/theowl/public/admin/dashboard/edit?identifier=products&id=<?= $product['ProductoId'] ?>" class="btn btn-sm btn-light">Editar</a>
                   <form action="/apps/theowl/public/admin/dashboard/product/delete?identifier=products&productId=<?= $product['ProductoId'] ?>" method="POST" class="d-inline">
                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este producto?')">Eliminar</button>
+                  </form>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex gap-2 flex-row w-100 justify-content-between">
+
+        <h3 class="fs-4">Categorias</h3>
+        <a href="/apps/theowl/public/admin/dashboard/create?identifier=categories" class="btn btn-primary mb-3 fw-semibold">Nueva Categoria</a>
+      </div>
+
+
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($categories as $category): ?>
+              <tr>
+                <td><?= $category['CategoriaId'] ?></td>
+                <td><?= htmlspecialchars($category['Nombre']) ?></td>
+                <td>
+                  <a href="/apps/theowl/public/admin/dashboard/edit?identifier=categories&id=<?= $category['CategoriaId'] ?>" class="btn btn-sm btn-light">Editar</a>
+                  <form action="/apps/theowl/public/admin/dashboard/category/delete?identifier=categories&categoryId=<?= $category['CategoriaId'] ?>" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar esta categoria?')">Eliminar</button>
                   </form>
                 </td>
               </tr>

@@ -4,5 +4,11 @@ namespace Models;
 
 class Role
 {
-  public function __construct(public string $name, public int $roleId) {}
+  public  $name;
+  public $roleId;
+  public function __construct(string $name,  int $roleId)
+  {
+    $this->name = $name;
+    $this->roleId = $roleId;
+  }
 }

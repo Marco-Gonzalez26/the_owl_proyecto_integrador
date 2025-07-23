@@ -4,5 +4,11 @@ namespace Models;
 
 class Category
 {
-  public function __construct(public string $name, public string $description, public ?int $categoryId = null) {}
+  public $name;
+  public $id;
+  public function __construct(string $name, ?int $categoryId = null)
+  {
+    $this->name = $name;
+    $this->id = $categoryId;
+  }
 }
