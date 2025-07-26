@@ -18,8 +18,8 @@ Monolítica en capas, Aplicando patron MVC junto con principios de Clean Archite
 
 ## INSTRUCCIONES DE INSTALACION Y EJECUCIÓN
 1. Abrir la linea de comandos y correr: `composer install`
-2. Extraer el ZIP adjunto de este proyecto dentro de la carpeta:
-   `C:\xampp\htdocs\[nombre_del_proyecto]`
+2. Extraer el ZIP adjunto de este proyecto dentro de la carpeta o clonar el repositorio dentro de la carpeta:
+   `C:\xampp\htdocs`
 3. Abrir el Panel de Control de XAMPP y activar:
    - El servidor de Apache
    - MySQL
