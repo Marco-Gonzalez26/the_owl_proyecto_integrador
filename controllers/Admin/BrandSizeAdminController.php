@@ -18,7 +18,6 @@ class BrandSizeAdminController
   {
     $brandName = $_POST['name'];
     $brandSizes = $_POST['brandSizes'] ?? [];
-    echo var_dump($brandName, $brandSizes);
 
     if ($this->service->createBrandWithSizes($brandName, $brandSizes)) {
       echo "<script>alert('Marca y tamaños creados con éxito');
@@ -31,10 +30,9 @@ class BrandSizeAdminController
     $brandId = $_POST['brandId'];
     $brandName = $_POST['name'];
     $brandSizes = $_POST['brandSizes'] ?? [];
-    echo var_dump($brandName, $brandSizes);
-    if ($this->service->updateBrandWithSizes($brandId, $brandName, $brandSizes)) {
-      echo "<script>alert('Marca y tamaños actualizados con éxito');
-      window.location.href = '/apps/theowl/public/admin/brands';</script>";
-    }
+    // if ($this->service->updateBrandWithSizes($brandId, $brandName, $brandSizes)) {
+    //   echo "<script>alert('Marca y tamaños actualizados con éxito');
+    //   window.location.href = '/apps/theowl/public/admin/brands';</script>";
+    // }
   }
 }

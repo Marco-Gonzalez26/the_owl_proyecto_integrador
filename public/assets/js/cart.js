@@ -1,5 +1,6 @@
 import { state } from './state.js'
 import { showToast } from './toast.js'
+
 export function deleteFromCart(id) {
   const productToDelete = state.cart.items.find(
     (item) => item.productId === id + ''

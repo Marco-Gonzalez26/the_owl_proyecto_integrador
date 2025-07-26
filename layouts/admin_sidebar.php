@@ -1,4 +1,8 @@
-<aside class="col-md-3 col-lg-2 d-md-block bg-light h-100 d-flex flex-column justify-content-between vh-100 position-sticky top-0">
+<button class="btn btn-dark  d-flex  align-items-center justify-content-center position-absolute top-0 start-0" id="admin-sidebar-btn">
+  <i class="bi bi-list"></i>
+</button>
+
+<aside class=" pt-sm-5 col-md-3 col-lg-2  bg-light h-100  flex-column justify-content-between vh-100 position-sticky top-0 pt-5" id="admin-sidebar">
   <div class="h-100 d-flex flex-column align-items-center">
     <ul class="nav flex-column d-flex gap-2 mb-3">
       <li class="nav-item">
@@ -35,6 +39,7 @@
   </div>
 </aside>
 
+
 <style>
   .sidebar {
     position: sticky;
@@ -64,5 +69,22 @@
 
   .nav-link:hover {
     color: rgb(1, 52, 107);
+  }
+
+  #admin-sidebar-btn {
+    width: 3rem;
+    height: 3rem;
+    z-index: 1000;
+  }
+
+  #admin-sidebar {
+    display: none;
+    transition: display 0.5s ease-in-out;
+    border-radius: 8px;
+  }
+
+  #admin-sidebar.show-sidebar {
+    display: flex;
+
   }
 </style>

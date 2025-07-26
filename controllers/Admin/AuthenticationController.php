@@ -2,13 +2,14 @@
 
 namespace Controllers\Admin;
 
-use Services\AuthenticationService;
+use Interfaces\AuthenticationServicieInterface;
+
 
 class AuthenticationController
 {
   private $service;
 
-  public function __construct(AuthenticationService $service)
+  public function __construct(AuthenticationServicieInterface $service)
   {
     $this->service = $service;
   }

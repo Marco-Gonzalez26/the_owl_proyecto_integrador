@@ -9,9 +9,9 @@ class CloudinaryService implements CloudinaryServiceInterface
 {
 
   private $uploadApi;
-  public function __construct()
+  public function __construct(CloudinaryConfig $config)
   {
-    $this->uploadApi = (new CloudinaryConfig())->getCloudinaryUploadAPI();
+    $this->uploadApi = $config->getCloudinaryUploadAPI();
   }
   public function uploadImage($file, $options = [])
   {

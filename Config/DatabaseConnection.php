@@ -11,14 +11,14 @@ use PDOException;
 
 class DatabaseConnection
 {
-  // Variables
+
   private $host = DB_HOST;
   private $dbname = DB_NAME;
   private $user = DB_USER;
   private $password = DB_PASS;
   private $connection;
   private static $instance = null;
-  // Constructor
+
   public function __construct()
   {
     try {
