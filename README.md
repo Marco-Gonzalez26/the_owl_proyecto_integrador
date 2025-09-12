@@ -1,7 +1,7 @@
-# PROYECTO INTEGRADOR: Eccomerce The Owl
+# PROYECTO INTEGRADOR: Ecommerce The Owl
 
 ## DESCRIPCION
-Aplicacion Web desarrollada con PHP, Javascript, MySql, HTML, CSS, Bootstrap 5, Cloudinary y Stripe API.
+Aplicacion Web desarrollada con Laravel, React ,PHP, Javascript, MySql, HTML, CSS, Tailwind CSS (Alternativa a Boostrap 5), Cloudinary y Stripe API.
 
 ## AUTORES
 - Marco Gonzalez
