@@ -1,13 +1,67 @@
-import AppLayout from '@/layouts/app-layout';
+import { ChartConfig } from '@/components/ui/chart';
+
+import { Chart } from '@/components/chart';
+import AppLayout from '@/layouts/admin-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { AlertTriangle, Archive, DollarSign, Package } from 'lucide-react';
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Panel de Control',
         href: '/dashboard',
     },
 ];
+
+const chartConfig: ChartConfig = {
+    Enero: {
+        label: 'Enero',
+        color: 'var(--chart-1)',
+    },
+    Febrero: {
+        label: 'Febrero',
+        color: 'var(--chart-2)',
+    },
+    Marzo: {
+        label: 'Marzo',
+        color: 'var(--chart-3)',
+    },
+    Abril: {
+        label: 'Abril',
+        color: 'var(--chart-4)',
+    },
+    Mayo: {
+        label: 'Mayo',
+        color: 'var(--chart-5)',
+    },
+    Junio: {
+        label: 'Junio',
+        color: 'var(--chart-1)',
+    },
+    Julio: {
+        label: 'Julio',
+        color: 'var(--chart-2)',
+    },
+    Agosto: {
+        label: 'Agosto',
+        color: 'var(--chart-3)',
+    },
+    Septiembre: {
+        label: 'Septiembre',
+        color: 'var(--chart-4)',
+    },
+    Octubre: {
+        label: 'Octubre',
+        color: 'var(--chart-5)',
+    },
+    Noviembre: {
+        label: 'Noviembre',
+        color: 'var(--chart-1)',
+    },
+    Diciembre: {
+        label: 'Diciembre',
+        color: 'var(--chart-2)',
+    },
+} satisfies ChartConfig;
 
 export default function Dashboard({ products, categories }: { products: any[]; categories: any[] }) {
     const lowStockProducts = products.filter((p) => p.Stock <= 10 && p.Stock > 0);
@@ -18,6 +72,21 @@ export default function Dashboard({ products, categories }: { products: any[]; c
             currency: 'USD',
         }).format(price);
     };
+
+    const sales = [
+        { month: 'Enero', brand: 'Fioravanti', product: 120 },
+        { month: 'Febrero', brand: 'Tropical', product: 95 },
+        { month: 'Marzo', brand: 'Güitig', product: 140 },
+        { month: 'Abril', brand: 'Pony Malta', product: 110 },
+        { month: 'Mayo', brand: 'Fioravanti', product: 160 },
+        { month: 'Junio', brand: 'Tropical', product: 130 },
+        { month: 'Julio', brand: 'Güitig', product: 150 },
+        { month: 'Agosto', brand: 'Pony Malta', product: 125 },
+        { month: 'Septiembre', brand: 'Fioravanti', product: 170 },
+        { month: 'Octubre', brand: 'Tropical', product: 145 },
+        { month: 'Noviembre', brand: 'Güitig', product: 155 },
+        { month: 'Diciembre', brand: 'Pony Malta', product: 180 },
+    ];
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Panel de Control" />
@@ -147,6 +216,14 @@ export default function Dashboard({ products, categories }: { products: any[]; c
                         <div className="bg-gray-50 px-5 py-3">
                             <div className="text-sm text-orange-600">Menos de 10 unidades</div>
                         </div>
+                    </div>
+                </div>
+
+                {/* Estadísticas de Ventas */}
+                <h2 className="mb-4 text-xl font-medium text-gray-900">Ventas</h2>
+                <div className="mb-8 grid h-full grid-cols-1 gap-6 md:grid-cols-2">
+                    <div className="h-full overflow-hidden rounded-lg bg-white shadow">
+                        <Chart chartData={sales} chartConfig={chartConfig} description="Ventas mensuales" />
                     </div>
                 </div>
             </div>

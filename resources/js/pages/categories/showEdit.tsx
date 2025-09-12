@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import AppLayout from '@/layouts/app-layout';
+import AppLayout from '@/layouts/admin-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { AlertTriangle, CheckCircle, LoaderCircle, Save, Tag, X, XCircle } from 'lucide-react';
 

@@ -272,7 +272,7 @@ export default function ShowById({ product }) {
                 {/* Debug info (remove in production) */}
                 <div className="mt-8 rounded-lg bg-gray-100 p-4">
                     <details>
-                        <summary className="mb-2 cursor-pointer font-medium text-gray-700">Datos del producto (Debug)</summary>
+                        <summary className="mb-2 cursor-pointer font-medium text-gray-700">Datos del producto (QUITAR PARA PRESENTACION)</summary>
                         <pre className="overflow-auto text-xs text-gray-600">{JSON.stringify(product, null, 2)}</pre>
                     </details>
                 </div>

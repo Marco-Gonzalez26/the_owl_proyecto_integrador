@@ -1,17 +1,17 @@
+import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Bookmark, Box, LayoutGrid, Tag } from 'lucide-react';
-import AppLogo from './app-logo';
+import { Bookmark, Box, Boxes, ChartNoAxesCombined, CircleDollarSign, Ruler, Tag, Users } from 'lucide-react';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Panel de control',
         href: '/the-owl/public/dashboard',
-        icon: LayoutGrid,
+        icon: ChartNoAxesCombined,
     },
     {
         title: 'Productos',
@@ -28,6 +28,26 @@ const mainNavItems: NavItem[] = [
         href: '/the-owl/public/dashboard/brands',
         icon: Tag,
     },
+    {
+        title: 'Tamaños',
+        href: '/the-owl/public/dashboard/sizes',
+        icon: Ruler,
+    },
+    {
+        title: 'Pedidos',
+        href: '/the-owl/public/dashboard/orders',
+        icon: Boxes,
+    },
+    {
+        title: 'Usuarios',
+        href: '/the-owl/public/dashboard/users',
+        icon: Users,
+    },
+    {
+        title: 'Ventas',
+        href: '/the-owl/public/dashboard/sales',
+        icon: CircleDollarSign,
+    },
 ];
 
 const footerNavItems: NavItem[] = [];
@@ -38,7 +58,7 @@ export function AppSidebar() {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton size="lg" asChild isActive={false}>
                             <Link href="/the-owl/public/dashboard" prefetch>
                                 <AppLogo />
                             </Link>

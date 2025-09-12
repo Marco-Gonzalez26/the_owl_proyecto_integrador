@@ -2,13 +2,17 @@
 
 namespace Interfaces;
 
-use Models\Size;
+use App\Models\Size;
+use Illuminate\Database\Eloquent\Collection;
 
 interface SizeRepositoryInterface
 {
-  public function getAll(): array;
-  public function getById(int $id): array;
-  public function create(Size $data): int;
-  public function update(int $id, Size $data): bool;
-  public function delete(int $id): bool;
+    public function getAll(): Collection;
+    public function getById(int $id): Size;
+    public function create(array $data): Size;
+    public function update(int $id, array $data): bool;
+    public function delete(int $id): bool;
+
+
+    public function checkIfSizeValueExists(array $data): bool;
 }

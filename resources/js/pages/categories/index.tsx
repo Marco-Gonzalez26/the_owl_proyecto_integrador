@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
-import AppLayout from '@/layouts/app-layout';
+import AppLayout from '@/layouts/admin-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { BookmarkX, Check, Pen, Plus, Search, Trash } from 'lucide-react';
 import { useMemo, useState } from 'react';

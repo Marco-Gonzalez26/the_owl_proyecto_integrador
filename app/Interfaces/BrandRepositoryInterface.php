@@ -1,14 +1,18 @@
 <?php
 
-namespace Interfaces;
+namespace App\Interfaces;
 
-use Models\Brand;
+use App\Models\Brand;
+use Illuminate\Database\Eloquent\Collection;
 
 interface BrandRepositoryInterface
 {
-  public function getAll(): array;
-  public function getById(int $id): array;
-  public function create(Brand $data): int;
-  public function update(int $id, Brand $data): bool;
-  public function delete(int $id): bool;
+    public function getAll(): Collection;
+    public function getById(int $id): ?Brand;
+    public function create(array $data): Brand;
+    public function update(int $id, array $data): bool;
+    public function delete(int $id): bool;
+    public function assignSize($sizeId, $state = true): bool;
+
+    public function updateSizeStatus($sizeId, $state): bool;
 }

@@ -5,26 +5,29 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 use Illuminate\Notifications\Notifiable;
+use Laravel\Cashier\Billable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, Billable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
+
+    protected $table = 'usuarios';
     protected $fillable = [
         'nombre_usuario',
-        'email', // Agregar para compatibilidad
+        'correo',
         'contrasena',
-        'password', // Alias para compatibilidad
         'rol',
     ];
-
+    protected $with = ['role'];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -48,5 +51,10 @@ class User extends Authenticatable
             'contrasena' => 'hashed',
             'password' => 'hashed',
         ];
+    }
+
+    public function role()
+    {
+        return $this->belongsTo('App\Models\Role', 'rol', 'RolId');
     }
 }
