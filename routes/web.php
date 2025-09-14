@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CheckoutController;
@@ -16,6 +17,8 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
+
+Route::get("/about-us", [AboutUsController::class, "index"])->name("about-us");
 
 Route::middleware([CheckEmployeeOrAdmin::class, "auth"])->group(function () {
     Route::prefix('/dashboard')->group(function () {

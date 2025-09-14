@@ -38,16 +38,16 @@ export function NavUser() {
                         align="end"
                         side={isMobile ? 'bottom' : state === 'collapsed' ? 'left' : 'bottom'}
                     >
-                        <DropdownMenuItem asChild>
-                            <Link href={route('dashboard')} prefetch>
+                        {/* <DropdownMenuItem asChild>
+                            <Link href={route('')} prefetch>
                                 <SidebarMenuButton className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm text-sidebar-accent-foreground hover:bg-sidebar-accent">
                                     <Settings className="h-5 w-5 text-sidebar-accent-foreground" />
                                     <span>Configuración</span>
                                 </SidebarMenuButton>
                             </Link>
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuItem asChild>
-                            <Link href={route('dashboard')} prefetch>
+                            <Link href={"/the-owl/public/"} prefetch>
                                 <SidebarMenuButton className="flex items-center gap-2 rounded-lg border-0 px-4 py-2 text-sm text-sidebar-accent-foreground hover:bg-sidebar-accent">
                                     <Store className="h-5 w-5 text-sidebar-accent-foreground" />
                                     <span>Ir a la página web</span>

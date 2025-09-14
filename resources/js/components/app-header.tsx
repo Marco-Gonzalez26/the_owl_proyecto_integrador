@@ -6,15 +6,14 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
 import { UserMenuContent } from '@/components/user-menu-content';
 import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Building, Home, LogIn, Menu, Package, Search, ShoppingCart, Tag } from 'lucide-react';
+import { Building, Handshake, Home, LogIn, Menu, Package, ShoppingCart, Tag } from 'lucide-react';
 import AppLogo from './app-logo';
-import AppLogoIcon from './app-logo-icon';
 
 const mainNavItems: NavItem[] = [
     {
@@ -28,13 +27,18 @@ const mainNavItems: NavItem[] = [
         icon: Package,
     },
     {
+        title: 'Mayoristas',
+        href: '/the-owl/public/sellers',
+        icon: Handshake,
+    },
+    {
         title: 'Marcas',
-        href: '/the-owl/public/dashboard/brands',
+        href: '/the-owl/public/brands',
         icon: Tag,
     },
     {
         title: 'Sobre nosotros',
-        href: '/the-owl/public/about',
+        href: '/the-owl/public/about-us',
         icon: Building,
     },
 ];
@@ -51,10 +55,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
-    console.log({ auth });
     return (
         <>
-            <div className="border-b border-sidebar-border/80">
+            <div className="dark:bg-sidebar-background sticky top-0 right-0 left-0 z-50 border-b border-sidebar-border/80 bg-white">
                 <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                     {/* Mobile Menu */}
                     <div className="lg:hidden">
@@ -65,15 +68,15 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 </Button>
                             </SheetTrigger>
                             <SheetContent side="left" className="flex h-full w-64 flex-col items-stretch justify-between bg-sidebar">
-                                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                                <SheetTitle className="sr-only">Menu de navegación</SheetTitle>
                                 <SheetHeader className="flex justify-start text-left">
-                                    <AppLogoIcon className="h-6 w-6 fill-current text-black dark:text-white" />
+                                    <AppLogo />
                                 </SheetHeader>
                                 <div className="flex h-full flex-1 flex-col space-y-4 p-4">
                                     <div className="flex h-full flex-col justify-between text-sm">
                                         <div className="flex flex-col space-y-4">
                                             {mainNavItems.map((item) => (
-                                                <Link key={item.title} href={item.href} className="flex items-center space-x-2 font-medium">
+                                                <Link key={item.title}  href={item.href} className="flex items-center space-x-2 font-medium">
                                                     {item.icon && <Icon iconNode={item.icon} className="h-5 w-5" />}
                                                     <span>{item.title}</span>
                                                 </Link>
@@ -131,7 +134,6 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     </div>
 
                     <div className="ml-auto flex items-center space-x-2">
-
                         {auth.user ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
@@ -168,7 +170,6 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 <ShoppingCart className="!size-5 opacity-80 group-hover:opacity-100" />
                             </Button>
                         </div>
-
                     </div>
                 </div>
             </div>

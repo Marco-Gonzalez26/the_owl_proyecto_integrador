@@ -145,18 +145,18 @@ export default function Index({ products }: { products: Product[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Inventario de Productos" />
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-neutral-50">
                 <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                     {/* Header del Panel */}
                     <div className="mb-8">
                         <div className="flex items-center justify-between">
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900">Panel de Control - Productos</h1>
-                                <p className="mt-2 text-sm text-gray-600">Gestión de inventario para bodega de bebidas</p>
+                                <h1 className="text-3xl font-bold text-neutral-900">Panel de Control - Productos</h1>
+                                <p className="mt-2 text-sm text-neutral-600">Gestión de inventario para bodega de bebidas</p>
                             </div>
                             <div className="text-right">
-                                <p className="text-sm text-gray-500">Última actualización</p>
-                                <p className="text-lg font-semibold text-gray-900">
+                                <p className="text-sm text-neutral-500">Última actualización</p>
+                                <p className="text-lg font-semibold text-neutral-900">
                                     {new Date().toLocaleDateString('es-EC', {
                                         weekday: 'long',
                                         year: 'numeric',
@@ -178,15 +178,15 @@ export default function Index({ products }: { products: Product[] }) {
 
                     {/* Panel de Filtros */}
                     <div className="mb-6 rounded-lg bg-white shadow">
-                        <div className="border-b border-gray-200 px-6 py-4">
-                            <h3 className="text-lg font-medium text-gray-900">Filtros de Búsqueda</h3>
+                        <div className="border-b border-neutral-200 px-6 py-4">
+                            <h3 className="text-lg font-medium text-neutral-900">Filtros de Búsqueda</h3>
                         </div>
                         <div className="p-6">
                             <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-4">
                                 <div>
-                                    <Label className="mb-2 block text-sm font-medium text-gray-700">Buscar producto</Label>
+                                    <Label className="mb-2 block text-sm font-medium text-neutral-700">Buscar producto</Label>
                                     <div className="relative">
-                                        <Search className="absolute top-3 left-3 h-4 w-4 text-gray-400" />
+                                        <Search className="absolute top-3 left-3 h-4 w-4 text-neutral-400" />
                                         <Input
                                             type="text"
                                             placeholder="Nombre o descripción..."
@@ -195,13 +195,13 @@ export default function Index({ products }: { products: Product[] }) {
                                                 setSearchTerm(e.target.value);
                                                 setCurrentPage(1);
                                             }}
-                                            className="block w-full rounded-md border border-gray-300 py-2 pr-3 pl-10 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                            className="block w-full rounded-md border border-neutral-300 py-2 pr-3 pl-10 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-gray-700">Categoría</label>
+                                    <label className="mb-2 block text-sm font-medium text-neutral-700">Categoría</label>
                                     <Select
                                         value={categoryFilter}
                                         onValueChange={(value) => {
@@ -224,7 +224,7 @@ export default function Index({ products }: { products: Product[] }) {
                                 </div>
 
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-gray-700">Estado de Stock</label>
+                                    <label className="mb-2 block text-sm font-medium text-neutral-700">Estado de Stock</label>
                                     <Select
                                         value={stockFilter}
                                         onValueChange={(value) => {
@@ -264,10 +264,10 @@ export default function Index({ products }: { products: Product[] }) {
 
                     {/* Tabla de Productos */}
                     <div className="rounded-lg bg-white shadow">
-                        <div className="border-b border-gray-200 px-6 py-4">
+                        <div className="border-b border-neutral-200 px-6 py-4">
                             <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-medium text-gray-900">Inventario de Productos ({filteredProducts.length})</h3>
-                                <p className="text-sm text-gray-500">
+                                <h3 className="text-lg font-medium text-neutral-900">Inventario de Productos ({filteredProducts.length})</h3>
+                                <p className="text-sm text-neutral-500">
                                     Mostrando {Math.min(startIndex + 1, filteredProducts.length)} -{' '}
                                     {Math.min(startIndex + itemsPerPage, filteredProducts.length)} de {filteredProducts.length}
                                 </p>
@@ -275,28 +275,28 @@ export default function Index({ products }: { products: Product[] }) {
                         </div>
 
                         <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                            <table className="min-w-full divide-y divide-neutral-200">
+                                <thead className="bg-neutral-50">
                                     <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Código</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Producto</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Categoría</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">Código</th>
+                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">Producto</th>
+                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">Categoría</th>
+                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">
                                             Precio Unitario
                                         </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Stock</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">Stock</th>
+                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">
                                             Valor Total
                                         </th>
-                                        <th className="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase">Acciones</th>
+                                        <th className="px-6 py-3 text-right text-xs font-medium tracking-wider text-neutral-900 uppercase">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-200 bg-white">
+                                <tbody className="divide-y divide-neutral-200 bg-white">
                                     {paginatedProducts.length === 0 ? (
                                         <tr>
                                             <td colSpan={7} className="px-6 py-12 text-center">
-                                                <div className="text-gray-500">
-                                                    <Package className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+                                                <div className="text-neutral-500">
+                                                    <Package className="mx-auto mb-4 h-12 w-12 text-neutral-400" />
                                                     <h3 className="mb-2 text-lg font-medium">No se encontraron productos</h3>
                                                     <p>Intenta ajustar los filtros de búsqueda</p>
                                                 </div>
@@ -304,14 +304,14 @@ export default function Index({ products }: { products: Product[] }) {
                                         </tr>
                                     ) : (
                                         paginatedProducts.map((product) => (
-                                            <tr key={product.ProductoId} className="hover:bg-gray-50">
-                                                <td className="px-6 py-4 font-mono text-sm whitespace-nowrap text-gray-900">
+                                            <tr key={product.ProductoId} className="hover:bg-neutral-50">
+                                                <td className="px-6 py-4 font-mono text-sm whitespace-nowrap text-neutral-900">
                                                     #{String(product.ProductoId).padStart(4, '0')}
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-start space-x-3">
                                                         <div className="flex-shrink-0">
-                                                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100">
+                                                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-100">
                                                                 <picture>
                                                                     <source srcSet={product.Imagen} type="image/webp" />
                                                                     <img
@@ -325,11 +325,11 @@ export default function Index({ products }: { products: Product[] }) {
                                                         <div className="min-w-0 flex-1">
                                                             <Link
                                                                 href={route('product.show', product.ProductoId)}
-                                                                className="block truncate text-sm font-medium text-gray-900 hover:text-blue-600"
+                                                                className="block truncate text-sm font-medium text-neutral-900 hover:text-blue-600"
                                                             >
                                                                 {product.Nombre}
                                                             </Link>
-                                                            <p className="mt-1 line-clamp-2 text-sm text-gray-500">{product.Descripcion}</p>
+                                                            <p className="mt-1 line-clamp-2 text-sm text-neutral-500">{product.Descripcion}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -339,17 +339,17 @@ export default function Index({ products }: { products: Product[] }) {
                                                         {product.NombreCategoria}
                                                     </span>
                                                 </td>
-                                                <td className="px-6 py-4 text-sm font-semibold whitespace-nowrap text-gray-900">
+                                                <td className="px-6 py-4 text-sm font-semibold whitespace-nowrap text-neutral-900">
                                                     {formatPrice(product.Precio)}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">{getStockBadge(product.Stock)}</td>
-                                                <td className="px-6 py-4 text-sm font-semibold whitespace-nowrap text-gray-900">
+                                                <td className="px-6 py-4 text-sm font-semibold whitespace-nowrap text-neutral-900">
                                                     {formatPrice(product.Precio * product.Stock)}
                                                 </td>
                                                 <td className="flex items-center gap-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
                                                     <Link
                                                         href={route('products.edit', product.ProductoId)}
-                                                        className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm leading-4 font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+                                                        className="inline-flex items-center rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm leading-4 font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
                                                     >
                                                         <Pen className="h-4 w-4" />
                                                     </Link>
@@ -389,26 +389,26 @@ export default function Index({ products }: { products: Product[] }) {
 
                         {/* Paginación */}
                         {totalPages > 1 && (
-                            <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+                            <div className="flex items-center justify-between border-t border-neutral-200 bg-white px-4 py-3 sm:px-6">
                                 <div className="flex flex-1 justify-between sm:hidden">
                                     <button
                                         onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                                         disabled={currentPage === 1}
-                                        className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                                        className="relative inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
                                     >
                                         Anterior
                                     </button>
                                     <button
                                         onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                                         disabled={currentPage === totalPages}
-                                        className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                                        className="relative ml-3 inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
                                     >
                                         Siguiente
                                     </button>
                                 </div>
                                 <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                                     <div>
-                                        <p className="text-sm text-gray-700">
+                                        <p className="text-sm text-neutral-700">
                                             Mostrando página <span className="font-medium">{currentPage}</span> de{' '}
                                             <span className="font-medium">{totalPages}</span>
                                         </p>
@@ -418,7 +418,7 @@ export default function Index({ products }: { products: Product[] }) {
                                             <button
                                                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                                                 disabled={currentPage === 1}
-                                                className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                                                className="relative inline-flex items-center rounded-l-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 disabled:opacity-50"
                                             >
                                                 <span className="sr-only">Anterior</span>←
                                             </button>
@@ -442,7 +442,7 @@ export default function Index({ products }: { products: Product[] }) {
                                                         className={`relative inline-flex items-center border px-4 py-2 text-sm font-medium ${
                                                             currentPage === pageNum
                                                                 ? 'z-10 border-blue-500 bg-blue-50 text-blue-600'
-                                                                : 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
+                                                                : 'border-neutral-300 bg-white text-neutral-500 hover:bg-neutral-50'
                                                         }`}
                                                     >
                                                         {pageNum}
@@ -453,7 +453,7 @@ export default function Index({ products }: { products: Product[] }) {
                                             <button
                                                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                                                 disabled={currentPage === totalPages}
-                                                className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                                                className="relative inline-flex items-center rounded-r-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 disabled:opacity-50"
                                             >
                                                 <span className="sr-only">Siguiente</span>→
                                             </button>
