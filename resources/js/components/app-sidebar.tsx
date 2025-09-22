@@ -10,42 +10,42 @@ import { Bookmark, Box, Boxes, ChartNoAxesCombined, CircleDollarSign, Ruler, Tag
 const mainNavItems: NavItem[] = [
     {
         title: 'Panel de control',
-        href: '/the-owl/public/dashboard',
+        href: '/the-owl/public/panel',
         icon: ChartNoAxesCombined,
     },
     {
         title: 'Productos',
-        href: '/the-owl/public/dashboard/products',
+        href: '/the-owl/public/panel/productos',
         icon: Box,
     },
     {
         title: 'Categorias',
-        href: '/the-owl/public/dashboard/categories',
+        href: '/the-owl/public/panel/categorias',
         icon: Bookmark,
     },
     {
         title: 'Marcas',
-        href: '/the-owl/public/dashboard/brands',
+        href: '/the-owl/public/panel/marcas',
         icon: Tag,
     },
     {
         title: 'Tamaños',
-        href: '/the-owl/public/dashboard/sizes',
+        href: '/the-owl/public/panel/tamaños',
         icon: Ruler,
     },
     {
         title: 'Pedidos',
-        href: '/the-owl/public/dashboard/orders',
+        href: '/the-owl/public/panel/pedidos',
         icon: Boxes,
     },
     {
         title: 'Usuarios',
-        href: '/the-owl/public/dashboard/users',
+        href: '/the-owl/public/panel/usuarios',
         icon: Users,
     },
     {
-        title: 'Ventas',
-        href: '/the-owl/public/dashboard/sales',
+        title: 'Proveedores',
+        href: '/the-owl/public/panel/proveedores',
         icon: CircleDollarSign,
     },
 ];

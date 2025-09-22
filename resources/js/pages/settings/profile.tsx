@@ -9,9 +9,8 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/admin-layout';
-import SettingsLayout from '@/layouts/settings/layout';
 import AppHeaderLayout from '@/layouts/app/app-header-layout';
+import SettingsLayout from '@/layouts/settings/layout';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,16 +20,18 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 type ProfileForm = {
-    name: string;
-    email: string;
+    nombre_completo: string;
+    correo: string;
+    nombre_usuario: string;
 };
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
-
+    console.log('🛒 auth', auth);
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
-        name: auth.user.name,
-        email: auth.user.email,
+        nombre_completo: auth.user.nombre_completo as string,
+        correo: auth.user.correo as string,
+        nombre_usuario: auth.user.nombre_usuario as string,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -56,14 +57,14 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             <Input
                                 id="name"
                                 className="mt-1 block w-full"
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
+                                value={data.nombre_completo}
+                                onChange={(e) => setData('nombre_completo', e.target.value)}
                                 required
                                 autoComplete="name"
                                 placeholder="Full name"
                             />
 
-                            <InputError className="mt-2" message={errors.name} />
+                            <InputError className="mt-2" message={errors.nombre_completo} />
                         </div>
 
                         <div className="grid gap-2">
@@ -73,14 +74,14 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 id="email"
                                 type="email"
                                 className="mt-1 block w-full"
-                                value={data.email}
-                                onChange={(e) => setData('email', e.target.value)}
+                                value={data.correo}
+                                onChange={(e) => setData('correo', e.target.value)}
                                 required
                                 autoComplete="username"
                                 placeholder="Email address"
                             />
 
-                            <InputError className="mt-2" message={errors.email} />
+                            <InputError className="mt-2" message={errors.correo} />
                         </div>
 
                         {mustVerifyEmail && auth.user.email_verified_at === null && (

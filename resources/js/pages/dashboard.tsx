@@ -138,20 +138,20 @@ export default function Dashboard({ products, categories }: { products: any[]; c
                         <div className="p-5">
                             <div className="flex items-center">
                                 <div className="flex-shrink-0">
-                                    <Package className="h-6 w-6 text-gray-400" />
+                                    <Package className="h-6 w-6 text-neutral-400" />
                                 </div>
                                 <div className="ml-5 w-0 flex-1">
                                     <dl>
-                                        <dt className="truncate text-sm font-medium text-gray-500">Total Productos</dt>
-                                        <dd className="text-lg font-medium text-gray-900">{products.length}</dd>
+                                        <dt className="truncate text-sm font-medium text-neutral-500">Total Productos</dt>
+                                        <dd className="text-lg font-medium text-neutral-900">{products.length}</dd>
                                     </dl>
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-gray-50 px-5 py-3">
+                        <div className="bg-neutral-50 px-5 py-3">
                             <div className="text-sm">
-                                <span className="font-medium text-gray-900">{categories.length}</span>
-                                <span className="text-gray-500"> categorías</span>
+                                <span className="font-medium text-neutral-900">{categories.length}</span>
+                                <span className="text-neutral-500"> categorías</span>
                             </div>
                         </div>
                     </div>
@@ -164,18 +164,18 @@ export default function Dashboard({ products, categories }: { products: any[]; c
                                 </div>
                                 <div className="ml-5 w-0 flex-1">
                                     <dl>
-                                        <dt className="truncate text-sm font-medium text-gray-500">Valor Inventario</dt>
-                                        <dd className="text-lg font-medium text-gray-900">
+                                        <dt className="truncate text-sm font-medium text-neutral-500">Valor Inventario</dt>
+                                        <dd className="text-lg font-medium text-neutral-900">
                                             {formatPrice(products.reduce((sum, p) => sum + p.Precio * p.Stock, 0))}
                                         </dd>
                                     </dl>
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-gray-50 px-5 py-3">
+                        <div className="bg-neutral-50 px-5 py-3">
                             <div className="text-sm">
-                                <span className="font-medium text-gray-900">{products.reduce((sum, p) => sum + p.Stock, 0)}</span>
-                                <span className="text-gray-500"> unidades totales</span>
+                                <span className="font-medium text-neutral-900">{products.reduce((sum, p) => sum + p.Stock, 0)}</span>
+                                <span className="text-neutral-500"> unidades totales</span>
                             </div>
                         </div>
                     </div>
@@ -188,13 +188,13 @@ export default function Dashboard({ products, categories }: { products: any[]; c
                                 </div>
                                 <div className="ml-5 w-0 flex-1">
                                     <dl>
-                                        <dt className="truncate text-sm font-medium text-gray-500">Sin Stock</dt>
+                                        <dt className="truncate text-sm font-medium text-neutral-500">Sin Stock</dt>
                                         <dd className="text-lg font-medium text-red-600">{outOfStockProducts.length}</dd>
                                     </dl>
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-gray-50 px-5 py-3">
+                        <div className="bg-neutral-50 px-5 py-3">
                             <div className="text-sm text-red-600">Requieren reabastecimiento</div>
                         </div>
                     </div>
@@ -207,20 +207,20 @@ export default function Dashboard({ products, categories }: { products: any[]; c
                                 </div>
                                 <div className="ml-5 w-0 flex-1">
                                     <dl>
-                                        <dt className="truncate text-sm font-medium text-gray-500">Stock Bajo</dt>
+                                        <dt className="truncate text-sm font-medium text-neutral-500">Stock Bajo</dt>
                                         <dd className="text-lg font-medium text-orange-600">{lowStockProducts.length}</dd>
                                     </dl>
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-gray-50 px-5 py-3">
+                        <div className="bg-neutral-50 px-5 py-3">
                             <div className="text-sm text-orange-600">Menos de 10 unidades</div>
                         </div>
                     </div>
                 </div>
 
                 {/* Estadísticas de Ventas */}
-                <h2 className="mb-4 text-xl font-medium text-gray-900">Ventas</h2>
+                <h2 className="mb-4 text-xl font-medium text-neutral-900">Ventas</h2>
                 <div className="mb-8 grid h-full grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="h-full overflow-hidden rounded-lg bg-white shadow">
                         <Chart chartData={sales} chartConfig={chartConfig} description="Ventas mensuales" />

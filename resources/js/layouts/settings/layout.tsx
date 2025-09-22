@@ -10,19 +10,14 @@ import { type PropsWithChildren } from 'react';
 const sidebarNavItems: NavItem[] = [
     {
         title: 'Perfil',
-        href: '/the-owl/public/settings/profile',
+        href: '/the-owl/public/configuracion/perfil',
         icon: UserPen,
     },
     {
         title: 'Contraseña',
-        href: '/the-owl/public/settings/password',
+        href: '/the-owl/public/configuracion/contraseña',
         icon: Lock,
-    },
-    {
-        title: 'Apariencia y tema',
-        href: '/the-owl/public/settings/appearance',
-        icon: Palette,
-    },
+    }
 ];
 
 export default function SettingsLayout({ children }: PropsWithChildren) {

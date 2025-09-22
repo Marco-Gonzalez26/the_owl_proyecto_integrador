@@ -81,18 +81,18 @@ export default function Index({ categories }: { categories: Category[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Categorias" />
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-neutral-50">
                 <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                     {/* Header del Panel */}
                     <div className="mb-8">
                         <div className="flex items-center justify-between">
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900">Panel de Control - Categorias</h1>
-                                <p className="mt-2 text-sm text-gray-600">Gestión de inventario para bodega de bebidas</p>
+                                <h1 className="text-3xl font-bold text-neutral-900">Panel de Control - Categorias</h1>
+                                <p className="mt-2 text-sm text-neutral-600">Gestión de inventario para bodega de bebidas</p>
                             </div>
                             <div className="text-right">
-                                <p className="text-sm text-gray-500">Última actualización</p>
-                                <p className="text-lg font-semibold text-gray-900">
+                                <p className="text-sm text-neutral-500">Última actualización</p>
+                                <p className="text-lg font-semibold text-neutral-900">
                                     {new Date().toLocaleDateString('es-EC', {
                                         weekday: 'long',
                                         year: 'numeric',
@@ -114,15 +114,15 @@ export default function Index({ categories }: { categories: Category[] }) {
 
                     {/* Panel de Filtros */}
                     <div className="mb-6 rounded-lg bg-white shadow">
-                        <div className="border-b border-gray-200 px-6 py-4">
-                            <h3 className="text-lg font-medium text-gray-900">Filtros de Búsqueda</h3>
+                        <div className="border-b border-neutral-200 px-6 py-4">
+                            <h3 className="text-lg font-medium text-neutral-900">Filtros de Búsqueda</h3>
                         </div>
                         <div className="p-6">
                             <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-4">
                                 <div>
-                                    <Label className="mb-2 block text-sm font-medium text-gray-700">Buscar categoria</Label>
+                                    <Label className="mb-2 block text-sm font-medium text-neutral-700">Buscar categoria</Label>
                                     <div className="relative">
-                                        <Search className="absolute top-3 left-3 h-4 w-4 text-gray-400" />
+                                        <Search className="absolute top-3 left-3 h-4 w-4 text-neutral-400" />
                                         <Input
                                             type="text"
                                             placeholder="Nombre o descripción..."
@@ -131,7 +131,7 @@ export default function Index({ categories }: { categories: Category[] }) {
                                                 setSearchTerm(e.target.value);
                                                 setCurrentPage(1);
                                             }}
-                                            className="block w-full rounded-md border border-gray-300 py-2 pr-3 pl-10 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                            className="block w-full rounded-md border border-neutral-300 py-2 pr-3 pl-10 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                         />
                                     </div>
                                 </div>
@@ -141,10 +141,10 @@ export default function Index({ categories }: { categories: Category[] }) {
 
                     {/* Tabla de Categorias */}
                     <div className="rounded-lg bg-white shadow">
-                        <div className="border-b border-gray-200 px-6 py-4">
+                        <div className="border-b border-neutral-200 px-6 py-4">
                             <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-medium text-gray-900">Numero de Categorias ({filteredCategories.length})</h3>
-                                <p className="text-sm text-gray-500">
+                                <h3 className="text-lg font-medium text-neutral-900">Numero de Categorias ({filteredCategories.length})</h3>
+                                <p className="text-sm text-neutral-500">
                                     Mostrando {Math.min(startIndex + 1, filteredCategories.length)} -{' '}
                                     {Math.min(startIndex + itemsPerPage, filteredCategories.length)} de {filteredCategories.length}
                                 </p>
@@ -152,21 +152,25 @@ export default function Index({ categories }: { categories: Category[] }) {
                         </div>
 
                         <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                            <table className="min-w-full divide-y divide-neutral-200">
+                                <thead className="bg-neutral-50">
                                     <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Código</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Categoría</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Estado</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Acciones</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase">Código</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase">
+                                            Categoría
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase">Estado</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase">
+                                            Acciones
+                                        </th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-200 bg-white">
+                                <tbody className="divide-y divide-neutral-200 bg-white">
                                     {paginatedCategories.length === 0 ? (
                                         <tr>
                                             <td colSpan={7} className="px-6 py-12 text-center">
-                                                <div className="text-gray-500">
-                                                    <BookmarkX className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+                                                <div className="text-neutral-500">
+                                                    <BookmarkX className="mx-auto mb-4 h-12 w-12 text-neutral-400" />
                                                     <h3 className="mb-2 text-lg font-medium">No se encontraron categorias</h3>
                                                     <p>Intenta ajustar los filtros de búsqueda</p>
                                                 </div>
@@ -174,8 +178,8 @@ export default function Index({ categories }: { categories: Category[] }) {
                                         </tr>
                                     ) : (
                                         paginatedCategories.map((category: Category) => (
-                                            <tr key={category.CategoriaId} className="hover:bg-gray-50">
-                                                <td className="px-6 py-4 font-mono text-sm whitespace-nowrap text-gray-900">
+                                            <tr key={category.CategoriaId} className="hover:bg-neutral-50">
+                                                <td className="px-6 py-4 font-mono text-sm whitespace-nowrap text-neutral-900">
                                                     #{String(category.CategoriaId).padStart(4, '0')}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">{category.Nombre}</td>
@@ -183,7 +187,7 @@ export default function Index({ categories }: { categories: Category[] }) {
                                                 <td className="flex items-center gap-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
                                                     <Link
                                                         href={route('categories.edit', category.CategoriaId)}
-                                                        className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm leading-4 font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+                                                        className="inline-flex items-center rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm leading-4 font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
                                                     >
                                                         <Pen className="h-4 w-4" />
                                                     </Link>
@@ -259,26 +263,26 @@ export default function Index({ categories }: { categories: Category[] }) {
 
                         {/* Paginación */}
                         {totalPages > 1 && (
-                            <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+                            <div className="flex items-center justify-between border-t border-neutral-200 bg-white px-4 py-3 sm:px-6">
                                 <div className="flex flex-1 justify-between sm:hidden">
                                     <button
                                         onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                                         disabled={currentPage === 1}
-                                        className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                                        className="relative inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
                                     >
                                         Anterior
                                     </button>
                                     <button
                                         onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                                         disabled={currentPage === totalPages}
-                                        className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                                        className="relative ml-3 inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
                                     >
                                         Siguiente
                                     </button>
                                 </div>
                                 <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                                     <div>
-                                        <p className="text-sm text-gray-700">
+                                        <p className="text-sm text-neutral-700">
                                             Mostrando página <span className="font-medium">{currentPage}</span> de{' '}
                                             <span className="font-medium">{totalPages}</span>
                                         </p>
@@ -288,7 +292,7 @@ export default function Index({ categories }: { categories: Category[] }) {
                                             <button
                                                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                                                 disabled={currentPage === 1}
-                                                className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                                                className="relative inline-flex items-center rounded-l-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 disabled:opacity-50"
                                             >
                                                 <span className="sr-only">Anterior</span>←
                                             </button>
@@ -312,7 +316,7 @@ export default function Index({ categories }: { categories: Category[] }) {
                                                         className={`relative inline-flex items-center border px-4 py-2 text-sm font-medium ${
                                                             currentPage === pageNum
                                                                 ? 'z-10 border-blue-500 bg-blue-50 text-blue-600'
-                                                                : 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
+                                                                : 'border-neutral-300 bg-white text-neutral-500 hover:bg-neutral-50'
                                                         }`}
                                                     >
                                                         {pageNum}
@@ -323,7 +327,7 @@ export default function Index({ categories }: { categories: Category[] }) {
                                             <button
                                                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                                                 disabled={currentPage === totalPages}
-                                                className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                                                className="relative inline-flex items-center rounded-r-md border border-neutral-300 bg-white px-2 py-2 text-sm font-medium text-neutral-500 hover:bg-neutral-50 disabled:opacity-50"
                                             >
                                                 <span className="sr-only">Siguiente</span>→
                                             </button>

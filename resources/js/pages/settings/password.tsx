@@ -14,7 +14,7 @@ import AppHeaderLayout from '@/layouts/app/app-header-layout';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Password settings',
-        href: '/settings/password',
+        href: '/configuracion/contreseña',
     },
 ];
 

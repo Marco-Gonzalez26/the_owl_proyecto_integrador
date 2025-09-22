@@ -7,6 +7,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckEmployeeOrAdmin;
@@ -18,28 +19,28 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
-Route::get("/about-us", [AboutUsController::class, "index"])->name("about-us");
+Route::get("/sobre-nosotros", [AboutUsController::class, "index"])->name("about-us");
 
 Route::middleware([CheckEmployeeOrAdmin::class, "auth"])->group(function () {
-    Route::prefix('/dashboard')->group(function () {
+    Route::prefix('/panel')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
         // Products
-        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/productos', [ProductController::class, 'index'])->name('products.index');
 
-        Route::get('/products/create', [ProductController::class, 'showCreate'])->name('products.create');
+        Route::get('/productos/crear', [ProductController::class, 'showCreate'])->name('products.create');
 
-        Route::get('/products/{id}/edit', [ProductController::class, 'showEdit'])->name('products.edit');
+        Route::get('/productos/{id}/editar', [ProductController::class, 'showEdit'])->name('products.edit');
 
         // Categories
-        Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
-        Route::get('/categories/create', [CategoriesController::class, 'showCreate'])->name('categories.create');
-        Route::get('/categories/{id}/edit', [CategoriesController::class, 'showEdit'])->name('categories.edit');
+        Route::get('/categorias', [CategoriesController::class, 'index'])->name('categories.index');
+        Route::get('/categorias/crear', [CategoriesController::class, 'showCreate'])->name('categories.create');
+        Route::get('/categorias/{id}/editar', [CategoriesController::class, 'showEdit'])->name('categories.edit');
 
         // Brands
-        Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
-        Route::get('/brands/{id}/edit', [BrandController::class, 'showEdit'])->name('brands.edit');
-        Route::get('/brands/create', [BrandController::class, 'showCreate'])->name('brands.create');
+        Route::get('/marcas', [BrandController::class, 'index'])->name('brands.index');
+        Route::get('/marcas/{id}/editar', [BrandController::class, 'showEdit'])->name('brands.edit');
+        Route::get('/marcas/crear', [BrandController::class, 'showCreate'])->name('brands.create');
 
 
 
@@ -47,48 +48,37 @@ Route::middleware([CheckEmployeeOrAdmin::class, "auth"])->group(function () {
 
         // API WEB ROUTES
         // Products
-        Route::post('/api/products/create', [ProductController::class, 'store'])->name('api.products.create');
+        Route::post('/api/productos/crear', [ProductController::class, 'store'])->name('api.products.create');
 
-        Route::put('/api/products/{id}/edit', [ProductController::class, 'update'])->name('api.products.update');
+        Route::put('/api/productos/{id}/editar', [ProductController::class, 'update'])->name('api.products.update');
 
-        Route::delete('/api/products/{id}/delete', [ProductController::class, 'destroy'])->name('api.products.destroy');
+        Route::delete('/api/productos/{id}/eleminar', [ProductController::class, 'destroy'])->name('api.products.destroy');
 
         // Categories
-        Route::post('/api/categories/create', [CategoriesController::class, 'store'])->name('api.categories.create');
-        Route::put('/api/categories/{id}/edit', [CategoriesController::class, 'update'])->name('api.categories.update');
+        Route::post('/api/categorias/crear', [CategoriesController::class, 'store'])->name('api.categories.create');
+        Route::put('/api/categorias/{id}/editar', [CategoriesController::class, 'update'])->name('api.categories.update');
 
-        Route::delete('/categories/{id}/delete', [CategoriesController::class, 'destroy'])->name('api.categories.destroy');
+        Route::delete('/categorias/{id}/eliminar', [CategoriesController::class, 'destroy'])->name('api.categories.destroy');
     });
 });
 
 
-Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+Route::get('/catalogo', [CatalogController::class, 'index'])->name('catalog.index');
+
+Route::middleware('auth')->group(function () {
 
 
-Route::get('/checkout', function (Request $request) {
+    Route::get("/mis-pedidos", [OrderController::class, "showUserOrders"])->name("user.orders");
 
+    Route::post('/pedido', [CheckoutController::class, 'createCartCheckoutSession'])->name('checkout.create');
 
-    $quantity = 5;
-
-    return Inertia::resolveUrlUsing();
-})->name('checkout');
-
-Route::view('/checkout/success', 'checkout.success')->name('checkout.success');
-Route::view('/checkout/cancel', 'checkout.cancel')->name('checkout.cancel');
-
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
-
-
-Route::prefix('test')->name('test.')->group(function () {
-    // Test cart page with sample data
-    Route::get('/cart', [CheckoutController::class, 'testCart'])->name('cart');
-
-    // Test checkout with predefined items
-    Route::post('/checkout', [CheckoutController::class, 'testCheckout'])->name('checkout');
-
-    // Test Stripe API connection
-    Route::get('/stripe-connection', [CheckoutController::class, 'testStripeConnection'])->name('stripe.connection');
+    Route::get('/pedido/exitoso', [CheckoutController::class, "checkOutSuccess"])->name('checkout.success');
+    Route::get('/pedido/error', [CheckoutController::class, "error"])->name('checkout.error');
+    Route::get('/pedido/cancelado', [CheckoutController::class, "cancel"])->name('checkout.cancel');
 });
 
+
+
+Route::get('/producto/{id}', [ProductController::class, 'show'])->name('product.show');
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

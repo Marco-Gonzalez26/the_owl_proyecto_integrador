@@ -28,4 +28,5 @@ class DashboardController extends Controller
             'categories' => $categories
         ]);
     }
+    
 }

@@ -82,21 +82,21 @@ export default function Catalog({ products, categories }: CatalogProps) {
     return (
         <AppHeaderLayout>
             <Head title="Catálogo de Productos" />
-            <div className="min-h-screen ">
+            <div className="min-h-screen">
                 <div className="border-b bg-white">
                     <div className="mx-auto max-w-7xl px-2 py-4">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                            <h1 className="mb-4 text-xl font-bold text-gray-900 md:mb-0">Catálogo de Productos</h1>
+                            <h1 className="mb-4 text-xl font-bold text-neutral-900 md:mb-0">Catálogo de Productos</h1>
                             <div className="flex items-center space-x-4">
-                                <span className="text-sm text-gray-600">
+                                <span className="text-sm text-neutral-600">
                                     {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
                                 </span>
 
-                                <div className="flex rounded-lg bg-gray-200 p-1">
+                                <div className="flex rounded-lg bg-neutral-200 p-1">
                                     <button
                                         onClick={() => setViewMode('grid')}
                                         className={`rounded-md p-2 transition-colors ${
-                                            viewMode === 'grid' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                                            viewMode === 'grid' ? 'bg-white text-blue-600 shadow-sm' : 'text-neutral-600 hover:text-neutral-900'
                                         }`}
                                     >
                                         <Grid size={20} />
@@ -104,7 +104,7 @@ export default function Catalog({ products, categories }: CatalogProps) {
                                     <button
                                         onClick={() => setViewMode('list')}
                                         className={`rounded-md p-2 transition-colors ${
-                                            viewMode === 'list' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                                            viewMode === 'list' ? 'bg-white text-blue-600 shadow-sm' : 'text-neutral-600 hover:text-neutral-900'
                                         }`}
                                     >
                                         <List size={20} />
@@ -120,7 +120,7 @@ export default function Catalog({ products, categories }: CatalogProps) {
                         <div className="lg:w-64">
                             <Button
                                 onClick={() => setShowFilters(!showFilters)}
-                                className="mb-4 flex w-full items-center justify-between rounded-lg border bg-white p-4 shadow-sm lg:hidden"
+                                className="mb-4 flex w-full items-center justify-between rounded-lg border bg-white p-4 shadow-sm lg:hidden text-neutral-700"
                             >
                                 <span className="flex items-center font-medium">
                                     <Filter size={20} className="mr-2" />
@@ -131,7 +131,7 @@ export default function Catalog({ products, categories }: CatalogProps) {
 
                             <div className={`space-y-6 rounded-lg border bg-white p-6 shadow-sm ${showFilters || 'hidden lg:block'}`}>
                                 <div>
-                                    <Label className="mb-2 block text-sm font-medium text-gray-700">Buscar productos</Label>
+                                    <Label className="mb-2 block text-sm font-medium text-neutral-700">Buscar productos</Label>
                                     <div className="relative">
                                         <Search size={20} className="absolute top-1/2 left-3 -translate-y-1/2 transform text-neutral-400" />
                                         <Input
@@ -139,13 +139,13 @@ export default function Catalog({ products, categories }: CatalogProps) {
                                             placeholder="Nombre, descripción..."
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
-                                            className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                            className="w-full rounded-lg border border-neutral-300 py-2 pr-4 pl-10 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="text-neutral-700">
-                                    <Label className="mb-2 block text-sm font-medium text-gray-700">Categoría</Label>
+                                    <Label className="mb-2 block text-sm font-medium text-neutral-700">Categoría</Label>
                                     <Select
                                         onValueChange={(value) => {
                                             setSelectedCategory(value);
@@ -169,21 +169,21 @@ export default function Catalog({ products, categories }: CatalogProps) {
                                 </div>
 
                                 <div>
-                                    <Label className="mb-2 block text-sm font-medium text-gray-700">Rango de precio</Label>
+                                    <Label className="mb-2 block text-sm font-medium text-neutral-700">Rango de precio</Label>
                                     <div className="flex space-x-2">
                                         <Input
                                             type="number"
                                             placeholder={`Mín: ${priceStats.min}`}
                                             value={priceRange.min}
                                             onChange={(e) => setPriceRange((prev) => ({ ...prev, min: e.target.value }))}
-                                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                            className="w-full rounded-lg border border-neutral-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                                         />
                                         <Input
                                             type="number"
                                             placeholder={`Máx: ${priceStats.max}`}
                                             value={priceRange.max}
                                             onChange={(e) => setPriceRange((prev) => ({ ...prev, max: e.target.value }))}
-                                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                            className="w-full rounded-lg border border-neutral-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                                         />
                                     </div>
                                 </div>
@@ -199,11 +199,11 @@ export default function Catalog({ products, categories }: CatalogProps) {
                         <div className="flex-1">
                             {filteredProducts.length === 0 ? (
                                 <div className="py-12 text-center">
-                                    <div className="mb-4 text-gray-400">
+                                    <div className="mb-4 text-neutral-400">
                                         <Search size={48} className="mx-auto" />
                                     </div>
-                                    <h3 className="mb-2 text-lg font-medium text-gray-900">No se encontraron productos</h3>
-                                    <p className="text-gray-600">Intenta ajustar los filtros o términos de búsqueda</p>
+                                    <h3 className="mb-2 text-lg font-medium text-neutral-900">No se encontraron productos</h3>
+                                    <p className="text-neutral-600">Intenta ajustar los filtros o términos de búsqueda</p>
                                 </div>
                             ) : (
                                 <div

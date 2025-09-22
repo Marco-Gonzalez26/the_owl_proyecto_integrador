@@ -9,16 +9,21 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use App\Interfaces\CloudinaryServiceInterface;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
     protected $productRepository;
     protected $categoryRepository;
 
-    public function __construct(ProductRepositoryInterface $productRepository, CategoryRepositoryInterface $categoryRepository)
+    protected $cloudinaryService;
+
+    public function __construct(ProductRepositoryInterface $productRepository, CategoryRepositoryInterface $categoryRepository, CloudinaryServiceInterface $cloudinaryService)
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->cloudinaryService = $cloudinaryService;
     }
 
     public function index(): InertiaResponse
@@ -48,20 +53,32 @@ class ProductController extends Controller
     }
     public function store(Request $request): RedirectResponse
     {
+        $image = $request->file('Imagen');
+        $imageUrl = $this->cloudinaryService->uploadImage($image);
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:0.01',
-            'stock' => 'required|integer|min:0',
-            'imageUrl' => 'required|string',
-            'categoryId' => 'required|integer|exists:categorias,CategoriaId'
+            'Nombre' => 'required|string|max:255',
+            'Descripcion' => 'required|string',
+            'Precio' => 'required|numeric|min:0.01',
+            'Stock' => 'required|integer|min:0',
+            'Imagen' => 'required|file',
+            'CategoriaId' => 'required|integer|exists:categorias,CategoriaId'
         ]);
 
-        $product = $this->productRepository->create($validated);
+        $productToCreate = [
+            'Nombre' => $validated["Nombre"],
+            'Descripcion' => $validated["Descripcion"],
+            'Precio' => $validated["Precio"],
+            'Stock' => $validated["Stock"],
+            'Imagen' => $imageUrl,
+            'CategoriaId' => $validated["CategoriaId"]
+        ];
+        Log::info('Producto a crear', ['product' => $productToCreate]);
+        $product = $this->productRepository->create($productToCreate);
+
         if (!$product) {
-            return redirect()->route('products.index')->with('message', 'Producto no creado');
+            return redirect()->route('dashboard')->with('message', 'Producto no creado');
         }
-        return redirect()->route('products.index')->with('message', 'Producto creado correctamente');
+        return redirect()->route('dashboard')->with('message', 'Producto creado correctamente');
     }
 
     public function showEdit(int $id): InertiaResponse

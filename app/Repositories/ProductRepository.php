@@ -83,4 +83,17 @@ class ProductRepository implements ProductRepositoryInterface
 
         return $product->delete();
     }
+
+    public function decrementStock(int $id, int $quantity): bool
+    {
+        $product = $this->model->find($id);
+
+        if (!$product) {
+            return false;
+        }
+
+        $product->Stock -= $quantity;
+
+        return $product->save();
+    }
 }

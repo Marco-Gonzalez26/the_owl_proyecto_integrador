@@ -23,9 +23,15 @@ class CatalogController extends Controller
     {
         $products = $this->productRepository->getAll();
         $categories = $this->categoryRepository->getAll();
-        return Inertia::render('catalog', [
+        return Inertia::render('catalog/clients', [
             'products' => $products,
             'categories' => $categories
         ]);
+    }
+
+    public function showSellersCatalog()
+    {
+
+        return Inertia::render('catalog/sellers');
     }
 }

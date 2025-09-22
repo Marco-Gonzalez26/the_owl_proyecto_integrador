@@ -65,7 +65,7 @@ export default function Welcome() {
                                         Desde refrescos y jugos hasta bebidas premium y especialidades, tenemos la selección más amplia de Santo
                                         Domingo. Cada producto seleccionado cuidadosamente para tu satisfacción.
                                     </p>
-                                    <Button className="bg-white font-semibold text-red-900 hover:bg-gray-100" asChild>
+                                    <Button className="bg-white font-semibold text-red-900 hover:bg-neutral-100" asChild>
                                         <Link href={route('catalog.index')}>Ver Todas las Bebidas</Link>
                                     </Button>
                                 </div>
@@ -98,62 +98,68 @@ export default function Welcome() {
                     </div>
                 </section>
 
-                <section className="bg-white py-16 dark:bg-gray-900">
+                <section className="bg-white py-16 dark:bg-neutral-900">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="mb-12 text-center">
-                            <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">¿Por qué elegir The Owl?</h2>
-                            <p className="mx-auto max-w-2xl text-gray-600 dark:text-gray-400">
+                            <h2 className="mb-4 text-3xl font-bold text-neutral-900 dark:text-white">¿Por qué elegir The Owl?</h2>
+                            <p className="mx-auto max-w-2xl text-neutral-600 dark:text-neutral-400">
                                 Nos destacamos por ofrecer calidad, variedad y un servicio excepcional en cada compra.
                             </p>
                         </div>
 
                         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                            <div className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
                                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/30">
                                     <Award className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                                 </div>
-                                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">Calidad de calidad</h3>
-                                <p className="text-gray-600 dark:text-gray-400">Productos seleccionados con los más altos estándares de calidad .</p>
+                                <h3 className="mb-3 text-xl font-bold text-neutral-900 dark:text-white">Calidad de calidad</h3>
+                                <p className="text-neutral-600 dark:text-neutral-400">
+                                    Productos seleccionados con los más altos estándares de calidad .
+                                </p>
                             </div>
 
-                            <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                            <div className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
                                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 dark:bg-green-900/30">
                                     <Truck className="h-6 w-6 text-green-600 dark:text-green-400" />
                                 </div>
-                                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">Entrega Rápida</h3>
-                                <p className="text-gray-600 dark:text-gray-400">Delivery en Santo Domingo con tiempos de entrega increibles.</p>
+                                <h3 className="mb-3 text-xl font-bold text-neutral-900 dark:text-white">Entrega Rápida</h3>
+                                <p className="text-neutral-600 dark:text-neutral-400">Delivery en Santo Domingo con tiempos de entrega increibles.</p>
                             </div>
 
-                            <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                            <div className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
                                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-900/30">
                                     <Shield className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                                 </div>
-                                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">Pago Seguro</h3>
-                                <p className="text-gray-600 dark:text-gray-400">Múltiples métodos de pago con tecnología segura y confiable.</p>
+                                <h3 className="mb-3 text-xl font-bold text-neutral-900 dark:text-white">Pago Seguro</h3>
+                                <p className="text-neutral-600 dark:text-neutral-400">Múltiples métodos de pago con tecnología segura y confiable.</p>
                             </div>
 
-                            <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                            <div className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
                                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 dark:bg-orange-900/30">
                                     <Users className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                                 </div>
-                                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">Atención Personalizada</h3>
-                                <p className="text-gray-600 dark:text-gray-400">Soporte mediante WhatsApp para cada uno de nuestros clientes.</p>
+                                <h3 className="mb-3 text-xl font-bold text-neutral-900 dark:text-white">Atención Personalizada</h3>
+                                <p className="text-neutral-600 dark:text-neutral-400">
+                                    Soporte mediante WhatsApp para cada uno de nuestros clientes.
+                                </p>
                             </div>
 
-                            <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                            <div className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
                                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-red-100 dark:bg-red-900/30">
                                     <Clock className="h-6 w-6 text-red-600 dark:text-red-400" />
                                 </div>
-                                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">Disponibilidad 24/7</h3>
-                                <p className="text-gray-600 dark:text-gray-400">Compra en línea en cualquier momento, los 7 días de la semana.</p>
+                                <h3 className="mb-3 text-xl font-bold text-neutral-900 dark:text-white">Disponibilidad 24/7</h3>
+                                <p className="text-neutral-600 dark:text-neutral-400">
+                                    Compra en línea en cualquier momento, los 7 días de la semana.
+                                </p>
                             </div>
 
-                            <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                            <div className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
                                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-teal-100 dark:bg-teal-900/30">
                                     <Star className="h-6 w-6 text-teal-600 dark:text-teal-400" />
                                 </div>
-                                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">Experiencia de compra increibile</h3>
-                                <p className="text-gray-600 dark:text-gray-400">Una experiencia de compra diseñada pensando en tu comodidad.</p>
+                                <h3 className="mb-3 text-xl font-bold text-neutral-900 dark:text-white">Experiencia de compra increibile</h3>
+                                <p className="text-neutral-600 dark:text-neutral-400">Una experiencia de compra diseñada pensando en tu comodidad.</p>
                             </div>
                         </div>
                     </div>
@@ -162,14 +168,14 @@ export default function Welcome() {
                 {/* CTA Section */}
                 <section className="py-16 lg:py-24">
                     <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-                        <h2 className="mb-4 text-3xl font-bold text-gray-900 lg:text-4xl dark:text-white">¿Listo para comenzar tu experiencia?</h2>
-                        <p className="mb-8 text-xl leading-relaxed text-gray-600 dark:text-gray-400">
+                        <h2 className="mb-4 text-3xl font-bold text-neutral-900 lg:text-4xl dark:text-white">¿Listo para comenzar tu experiencia?</h2>
+                        <p className="mb-8 text-xl leading-relaxed text-neutral-600 dark:text-neutral-400">
                             Únete a miles de clientes satisfechos que confían en The Owl para sus compras de bebidas.
                         </p>
                         <div className="flex flex-col justify-center gap-4 sm:flex-row">
                             <Button
                                 size="lg"
-                                className="bg-black px-8 py-4 text-lg font-semibold text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-100"
+                                className="bg-black px-8 py-4 text-lg font-semibold text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-100"
                                 asChild
                             >
                                 <Link href={route('catalog.index')}>

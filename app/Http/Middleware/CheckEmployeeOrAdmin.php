@@ -17,12 +17,12 @@ class CheckEmployeeOrAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
-            return redirect('/login');
+            return redirect()->route('login');
         }
 
         $user = Auth::user();
-        if(!in_array($user->rol, [1, 2])) {
-            abort(403, "Accesso no autorizado. Solo empleados y administradores pueden acceder a esta página.");
+        if (!in_array($user->role->RolId, [1, 2])) {
+            return redirect()->route('catalog.index');
         }
 
         return $next($request);

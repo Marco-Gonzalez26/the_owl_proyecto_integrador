@@ -3,81 +3,109 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\OrderItemRepositoryInterface;
+use App\Interfaces\OrderRepositoryInterface;
+use App\Interfaces\ProductRepositoryInterface;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 use Stripe\StripeClient;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
-    protected  $stripe;
-    public function __construct()
+    protected $stripe;
+    protected $orderRepository;
+    protected $orderItemRepository;
+    protected $productRepository;
+
+    public function __construct(StripeClient $stripe, OrderRepositoryInterface $orderRepository, OrderItemRepositoryInterface $orderItemRepository, ProductRepositoryInterface $productRepository)
     {
-        // Configurar stripe
-        $apiKey = env('STRIPE_SECRET_KEY');
-        $this->stripe = new StripeClient(["api_key" => $apiKey]);
+        $this->stripe = $stripe;
+        $this->orderRepository = $orderRepository;
+        $this->orderItemRepository = $orderItemRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function createCartCheckoutSession(Request $request)
     {
+        $stripe = new StripeClient(["api_key" => env('STRIPE_SECRET')]);
 
+        Log::info('Request completa:', $request->all());
+
+        // O solo los datos específicos que necesitas
+        Log::info('Cart items:', ['cart_items' => $request->input('cart_items')]);
+
+        // Ver headers si los necesitas
+        Log::info('Headers:', $request->headers->all());
         $request->validate([
-            'cart_items' => 'required|array',
-            'cart_items.*.id' => 'required|array',
-            'cart_items.*.quantity' => 'required|array',
-            'cart_items.*.price' => 'required|array',
-            'cart_items.*.name' => 'required|array',
-            'cart_items.*.image' => 'required|array',
-
+            'cart_items' => 'required|array|min:1',
+            'cart_items.*.id' => 'required|integer',
+            'cart_items.*.quantity' => 'required|integer|min:1',
+            'cart_items.*.price' => 'required|numeric|min:0',
+            'cart_items.*.name' => 'required|string',
+            'cart_items.*.image' => 'required|string',
         ]);
 
         // Convertir productos del carrito en procuctos que stripe acepte
 
         $lineItems = [];
+        $totalAmount = 0;
         foreach ($request->cart_items as $item) {
+            $unitPrice = floatval($item['price']);
+            $unitAmountCents = (int)($unitPrice * 100);
+            $itemTotal = $unitAmountCents * $item['quantity'];
+            $totalAmount += $itemTotal;
+
             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'usd',
-                    'unit_amount' => $item->price * $item->quantity,
+                    'unit_amount' => $unitAmountCents,
                     'product_data' => [
-                        'name' => $item->name,
-                        'images' => [$item->image],
+                        'name' => $item['name'],
+                        'images' => [$item['image']],
                         'metadata' => [
-                            'product_id' => $item->id,
+                            "id" => $item['id'],
+                            'product_id' => $item['id'],
                         ]
                     ]
                 ],
-                'quantity' => $item->quantity,
+                'quantity' => (int)$item['quantity'],
             ];
         }
 
         try {
-            $session = Session::create([
-                'line_items' => $lineItems,
+            $checkoutSession = $this->stripe->checkout->sessions->create([
+                "locale" => "es-419",
+                "customer_email" => $request->user()->email ?? $request->user()->correo,
+
+                'line_items' =>  $lineItems,
                 'mode' => 'payment',
                 'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url' => route('checkout.cancel'),
                 "metadata" => [
                     "user_id" => $request->user()->id,
-                    "cart_total_items" => count($request->cart_items)
+                    "cart_total_items" => count($request->cart_items),
+
                 ]
             ]);
+            return Inertia::location($checkoutSession->url);
         } catch (\Exception $e) {
             return redirect()->back()->withErrors($e->getMessage());
         }
-
-        return redirect()->route('checkout.success')->with('session_id', $session->id);
     }
 
     public function checkOutSuccess(Request $request)
     {
+
         $checkOutSessionId = $request->get('session_id');
 
         if ($checkOutSessionId) {
             try {
-                $session = Session::retrieve($checkOutSessionId, [
-                    'expand' => ['line_items', 'customer_details']
+                $session = $this->stripe->checkout->sessions->retrieve($checkOutSessionId, [
+                    'expand' => ['line_items', 'customer_details', 'line_items.data.price.product',]
                 ]);
 
                 $this->handleSuccessPayment($session);
@@ -89,6 +117,8 @@ class CheckoutController extends Controller
                         'currency' => $session->currency,
                         'customer_email' => $session->customer_details->email ?? null,
                         'payment_status' => $session->payment_status,
+                        'payment_method' => $session->payment_method,
+                        "line_items" => $session->line_items
                     ]
                 ]);
             } catch (\Exception $e) {
@@ -97,7 +127,7 @@ class CheckoutController extends Controller
                 ]);
             }
         }
-        return Inertia::render('Checkout/Success');
+        return Inertia::render('checkout/success');
     }
 
     public function cancelCheckOut()
@@ -105,14 +135,75 @@ class CheckoutController extends Controller
         return Inertia::render('checkout/cancel');
     }
 
+    public function error(Request $request)
+    {
+        $checkOutSessionId = $request->get('session_id');
+
+        if ($checkOutSessionId) {
+            try {
+                $session = $this->stripe->checkout->sessions->retrieve($checkOutSessionId, [
+                    'expand' => ['line_items', 'customer_details', 'line_items.data.price.product',]
+                ]);
+                return Inertia::render('checkout/error', [
+                    "message" => 'No fue posible obtener los detalles del pago',
+                    "session" => $session
+                ]);
+            } catch (\Exception $e) {
+                return Inertia::render('checkout/error', [
+                    "message" => 'No fue posible obtener los detalles del pago'
+                ]);
+            }
+        }
+    }
+
     public function handleSuccessPayment($session)
     {
 
-        // TODO: Limpiar carrito, Actualizar inventario, Crear orden
+
         // TODO: Enviar mensaje al whatsapp de la empresa para el envio
+        $order = null;
+        $user = Auth::check() ? Auth::user() : null;
+        try {
+            $order = $this->orderRepository->create([
+                'StripeSesionId' => $session->id,
+                'CorreoCliente' => $session->customer_details->email,
+                'NombreCliente' => $session->customer_details->name,
+                'Monto' => $session->amount_total / 100,
+                'Moneda' => $session->currency,
+                'EstadoPago' => $session->payment_status === 'paid' ? 'pagado' : 'pendiente',
+                'Estado' => 'pagado',
+                'UsuarioId' =>  $user->id,
+                "DireccionFacturacion" => $user->direccion,
+                "DireccionEnvio" => $user->direccion,
+                ""
+            ]);
 
+            Log::info('Order creado', ['order' => $order]);
+        } catch (\Exception $e) {
+            Log::info('Error creando order', ['error' => $e->getMessage()]);
+            return redirect()->back()->withErrors($e->getMessage());
+        }
 
-        $userId = $session->metadata->user_id ?? null;
+        foreach ($session->line_items as $item) {
+            try {
+
+                $productId = $item->price->product->metadata["product_id"];
+                $orderItem = $this->orderItemRepository->create([
+                    'PedidoId' => $order->PedidoId,
+                    'ProductoId' => $productId,
+                    'NombreProducto' => $item->price->product->name,
+                    'PrecioUnitario' => $item->price->unit_amount / 100,
+                    'Cantidad' => $item->quantity,
+                    'PrecioTotal' => $item->amount_total / 100,
+                    'ImagenProducto' => $item->price->product->images[0]
+                ]);
+
+                $this->productRepository->decrementStock($productId, $item->quantity);
+                Log::info('Producto del pedido creado', ['producto' => $productId, 'cantidad' => $item->quantity]);
+            } catch (\Exception $e) {
+                Log::info('Error creando producto del pedido', ['error' => $e->getMessage()]);
+            }
+        }
     }
 
     public function testCheckout(Request $request)

@@ -3,10 +3,8 @@ import { useContext } from 'react';
 
 export const useCart = () => {
     const context = useContext(CartContext);
-
-    if (!context) {
-        throw new Error('CartProvider must be used within a CartProvider');
+    if (!context || context.addToCart.toString() === '() => {}') {
+        throw new Error('useCart debe usarse dentro de CartProvider');
     }
-
     return context;
 };

@@ -14,10 +14,10 @@ export function ProductCard({ product, viewMode }: { product: any; viewMode: str
                 <div className="flex items-start space-x-4">
                     {product.Imagen && <img src={product.Imagen} alt={product.Nombre} className="h-20 w-20 rounded-lg object-cover" />}
                     <div className="flex-1">
-                        <Link href={route('product.show', product.ProductoId)} className="text-lg font-semibold text-gray-900 hover:text-blue-600">
+                        <Link href={route('product.show', product.ProductoId)} className="text-lg font-semibold text-neutral-900 hover:text-blue-600">
                             {product.Nombre}
                         </Link>
-                        {product.Descripcion && <p className="mt-1 line-clamp-2 text-sm text-gray-600">{product.Descripcion}</p>}
+                        {product.Descripcion && <p className="mt-1 line-clamp-2 text-sm text-neutral-600">{product.Descripcion}</p>}
                         <div className="mt-2 flex items-center justify-between">
                             <span className="text-xl font-bold text-blue-600">{formatPrice(product.Precio)}</span>
                             {product.Stock !== undefined && (
@@ -44,15 +44,18 @@ export function ProductCard({ product, viewMode }: { product: any; viewMode: str
             onClick={goToProduct}
         >
             {product.Imagen && (
-                <div className="aspect-w-16 aspect-h-12 bg-gray-200">
+                <div className="aspect-w-16 aspect-h-12 bg-neutral-200">
                     <img src={product.Imagen} alt={product.Nombre} className="size-full md:object-scale-down" />
                 </div>
             )}
             <div className="p-4">
-                <Link href={route('product.show', product.ProductoId)} className="mb-2 block text-lg font-semibold text-gray-900 hover:text-blue-600">
+                <Link
+                    href={route('product.show', product.ProductoId)}
+                    className="mb-2 block text-lg font-semibold text-neutral-900 hover:text-blue-600"
+                >
                     {product.Nombre}
                 </Link>
-                {product.Descripcion && <p className="mb-3 line-clamp-2 text-sm text-gray-600">{product.Descripcion}</p>}
+                {product.Descripcion && <p className="mb-3 line-clamp-2 text-sm text-neutral-600">{product.Descripcion}</p>}
                 <div className="flex items-center justify-between">
                     <span className="text-xl font-bold text-blue-600">{formatPrice(product.Precio)}</span>
                     {product.Stock !== undefined && (

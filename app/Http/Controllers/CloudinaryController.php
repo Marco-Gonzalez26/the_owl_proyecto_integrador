@@ -13,7 +13,7 @@ class CloudinaryController extends Controller
         $file = $request->file('file');
         $cloudinary = new Cloudinary();
         $result = $cloudinary->uploadApi()->upload($file->getRealPath(), [
-            'folder' => 'your_folder_name' 
+            'folder' => 'your_folder_name'
         ]);
         return response()->json($result);
     }

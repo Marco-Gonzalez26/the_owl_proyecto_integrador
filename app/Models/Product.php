@@ -8,14 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Product extends Model
 {
     protected $table = 'productos';
+
+
     protected $primaryKey = 'ProductoId';
     protected $fillable = [
         'Nombre',
         'Descripcion',
         'Precio',
         'Stock',
-        'Imagen'
-
+        'Imagen',
+        "CategoriaId"
     ];
     protected $casts = [
         'Precio' => 'decimal:2',
@@ -24,6 +26,8 @@ class Product extends Model
         "ProveedorId" => "integer",
         "MarcaId" => "integer",
     ];
+
+
 
     public function categoria(): BelongsTo
     {

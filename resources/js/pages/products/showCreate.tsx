@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/admin-layout';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { AlertTriangle, DollarSign, Hash, Package, Save, Upload, X } from 'lucide-react';
 
 const breadcrumbs = [
@@ -35,11 +35,11 @@ export default function Create() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(route('products.store'), {
+        post(route('api.products.create'), {
             preserveState: true,
             preserveScroll: true,
             onSuccess: () => {
-                // Redirigir o mostrar mensaje de éxito
+                router.push({ url: route('dashboard') });
             },
         });
     };
@@ -52,23 +52,24 @@ export default function Create() {
     };
 
     const selectedCategory = categories.find((cat) => cat.id === parseInt(data.CategoriaId));
+    console.log({data})
     const totalValue = data.Precio && data.Stock ? (parseFloat(data.Precio) * parseInt(data.Stock)).toFixed(2) : '0.00';
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Inventario de Productos" />
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-neutral-50">
                 <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
                     {/* Header */}
                     <div className="mb-8">
                         <div className="flex items-center justify-between">
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900">Crear Nuevo Producto</h1>
-                                <p className="mt-2 text-sm text-gray-600">Agrega un nuevo producto al inventario de la bodega</p>
+                                <h1 className="text-3xl font-bold text-neutral-900">Crear Nuevo Producto</h1>
+                                <p className="mt-2 text-sm text-neutral-600">Agrega un nuevo producto al inventario de la bodega</p>
                             </div>
                             <Link
                                 href={route('products.index')}
-                                className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+                                className="inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
                             >
                                 <X className="mr-2 h-4 w-4" />
                                 Cancelar
@@ -114,7 +115,7 @@ export default function Create() {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {categories.map((category) => (
-                                                    <SelectItem key={category.id} value={category.CategoriaId.toString()}>
+                                                    <SelectItem key={category.CategoriaId} value={category.CategoriaId.toString()}>
                                                         {category.Nombre}
                                                     </SelectItem>
                                                 ))}
@@ -145,7 +146,7 @@ export default function Create() {
                                                     {errors.Descripcion}
                                                 </p>
                                             )}
-                                            <p className="ml-auto text-sm text-gray-500">{data.Descripcion.length}/500 caracteres</p>
+                                            <p className="ml-auto text-sm text-neutral-500">{data.Descripcion.length}/500 caracteres</p>
                                         </div>
                                     </div>
                                 </div>
@@ -166,7 +167,7 @@ export default function Create() {
                                     <div className="space-y-2">
                                         <Label htmlFor="precio">Precio Unitario (USD) *</Label>
                                         <div className="relative">
-                                            <DollarSign className="absolute top-3 left-3 h-4 w-4 text-gray-400" />
+                                            <DollarSign className="absolute top-3 left-3 h-4 w-4 text-neutral-400" />
                                             <Input
                                                 id="precio"
                                                 type="number"
@@ -189,7 +190,7 @@ export default function Create() {
                                     <div className="space-y-2">
                                         <Label htmlFor="stock">Stock Inicial *</Label>
                                         <div className="relative">
-                                            <Hash className="absolute top-3 left-3 h-4 w-4 text-gray-400" />
+                                            <Hash className="absolute top-3 left-3 h-4 w-4 text-neutral-400" />
                                             <Input
                                                 id="stock"
                                                 type="number"
@@ -249,13 +250,13 @@ export default function Create() {
                                     <div className="space-y-2">
                                         <Label htmlFor="imagen">Subir Imagen</Label>
                                         <div className="flex w-full items-center justify-center">
-                                            <label className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:bg-gray-100">
+                                            <label className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-50 transition-colors hover:bg-neutral-100">
                                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                    <Upload className="mb-2 h-8 w-8 text-gray-400" />
-                                                    <p className="mb-2 text-sm text-gray-500">
+                                                    <Upload className="mb-2 h-8 w-8 text-neutral-400" />
+                                                    <p className="mb-2 text-sm text-neutral-500">
                                                         <span className="font-semibold">Clic para subir</span> o arrastra y suelta
                                                     </p>
-                                                    <p className="text-xs text-gray-500">PNG, JPG o JPEG (MAX. 2MB)</p>
+                                                    <p className="text-xs text-neutral-500">PNG, JPG o JPEG (MAX. 2MB)</p>
                                                 </div>
                                                 <input id="imagen" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
                                             </label>
@@ -288,26 +289,26 @@ export default function Create() {
                                     <CardDescription>Así se verá el producto en el inventario</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="rounded-lg border bg-gray-50 p-4">
+                                    <div className="rounded-lg border bg-neutral-50 p-4">
                                         <div className="flex items-start space-x-4">
                                             <div className="flex-shrink-0">
-                                                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-gray-200">
-                                                    <Package className="h-6 w-6 text-gray-400" />
+                                                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-neutral-200">
+                                                    <Package className="h-6 w-6 text-neutral-400" />
                                                 </div>
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <h4 className="mb-2 text-lg font-medium text-gray-900">{data.Nombre || 'Nombre del producto'}</h4>
+                                                <h4 className="mb-2 text-lg font-medium text-neutral-900">{data.Nombre || 'Nombre del producto'}</h4>
                                                 {selectedCategory && (
                                                     <span className="mb-2 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
                                                         {selectedCategory.name}
                                                     </span>
                                                 )}
-                                                <p className="mb-3 text-sm text-gray-600">
+                                                <p className="mb-3 text-sm text-neutral-600">
                                                     {data.Descripcion || 'Descripción del producto aparecerá aquí...'}
                                                 </p>
                                                 <div className="flex items-center space-x-4">
                                                     {data.Precio && (
-                                                        <span className="text-lg font-semibold text-gray-900">
+                                                        <span className="text-lg font-semibold text-neutral-900">
                                                             ${parseFloat(data.Precio).toFixed(2)}
                                                         </span>
                                                     )}

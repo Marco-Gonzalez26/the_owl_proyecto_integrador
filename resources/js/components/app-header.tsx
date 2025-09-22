@@ -12,8 +12,9 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Building, Handshake, Home, LogIn, Menu, Package, ShoppingCart, Tag } from 'lucide-react';
+import { Building, Handshake, Home, LogIn, Menu, Package, Tag } from 'lucide-react';
 import AppLogo from './app-logo';
+import { Cart } from './cart';
 
 const mainNavItems: NavItem[] = [
     {
@@ -23,22 +24,22 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Catálogo',
-        href: '/the-owl/public/catalog',
+        href: '/the-owl/public/catalogo',
         icon: Package,
     },
     {
         title: 'Mayoristas',
-        href: '/the-owl/public/sellers',
+        href: '/the-owl/public/catalogo/mayoristas',
         icon: Handshake,
     },
     {
         title: 'Marcas',
-        href: '/the-owl/public/brands',
+        href: '/the-owl/public/marcas',
         icon: Tag,
     },
     {
         title: 'Sobre nosotros',
-        href: '/the-owl/public/about-us',
+        href: '/the-owl/public/sobre-nosotros',
         icon: Building,
     },
 ];
@@ -55,11 +56,12 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
+    console.log('🛒 auth', auth);
     return (
         <>
             <div className="dark:bg-sidebar-background sticky top-0 right-0 left-0 z-50 border-b border-sidebar-border/80 bg-white">
                 <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
-                    {/* Mobile Menu */}
+                    {/* Menu de telefono */}
                     <div className="lg:hidden">
                         <Sheet>
                             <SheetTrigger asChild>
@@ -76,7 +78,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     <div className="flex h-full flex-col justify-between text-sm">
                                         <div className="flex flex-col space-y-4">
                                             {mainNavItems.map((item) => (
-                                                <Link key={item.title}  href={item.href} className="flex items-center space-x-2 font-medium">
+                                                <Link key={item.title} href={item.href} className="flex items-center space-x-2 font-medium">
                                                     {item.icon && <Icon iconNode={item.icon} className="h-5 w-5" />}
                                                     <span>{item.title}</span>
                                                 </Link>
@@ -107,7 +109,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         <AppLogo />
                     </Link>
 
-                    {/* Desktop Navigation */}
+                    {/* Menu de escritorio */}
                     <div className="ml-6 hidden h-full items-center space-x-6 lg:flex">
                         <NavigationMenu className="flex h-full items-stretch">
                             <NavigationMenuList className="flex h-full items-stretch space-x-2">
@@ -135,21 +137,29 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
 
                     <div className="ml-auto flex items-center space-x-2">
                         {auth.user ? (
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="size-10 rounded-full p-1">
-                                        <Avatar className="size-8 overflow-hidden rounded-full">
-                                            <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
-                                            <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                                {getInitials(auth.user.name)}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-56" align="end">
-                                    <UserMenuContent user={auth.user} />
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                            <div className="relative flex items-center space-x-1">
+                                <Button variant="outline" className="flex items-center" asChild>
+                                    <Link href={route('user.orders')} className="flex items-center">
+                                        <Package className="size-4 overflow-hidden" />
+                                        <span className="">Mis Pedidos</span>
+                                    </Link>
+                                </Button>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="size-10 rounded-full p-1">
+                                            <Avatar className="size-8 overflow-hidden rounded-full">
+                                                <AvatarImage src={auth.user.avatar} alt={auth.user.nombre_completo} />
+                                                <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                                                    {getInitials(auth.user.nombre_completo)}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-56" align="end">
+                                        <UserMenuContent user={auth.user} />
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
                         ) : (
                             <Button variant="outline" className="flex items-center space-x-2">
                                 <Link href={route('login')} className="flex items-center space-x-2">
@@ -165,10 +175,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 </Link>
                             </Button>
                         ) : null}
-                        <div className="relative flex items-center space-x-1">
-                            <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
-                                <ShoppingCart className="!size-5 opacity-80 group-hover:opacity-100" />
-                            </Button>
+
+                        <div className="relative flex items-center space-x-1 active:scale-95">
+                            <Cart />
                         </div>
                     </div>
                 </div>

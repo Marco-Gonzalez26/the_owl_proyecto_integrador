@@ -117,9 +117,9 @@ export default function AboutUs() {
                                                             <span className="text-xl">📞</span>
                                                         </div>
                                                         <div>
-                                                            <h4 className="mb-1 font-semibold text-gray-800">Contáctanos</h4>
-                                                            <p className="text-gray-600">+593 XX XXX XXXX</p>
-                                                            <p className="text-gray-600">info@theowlbodega.com</p>
+                                                            <h4 className="mb-1 font-semibold text-neutral-800">Contáctanos</h4>
+                                                            <p className="text-neutral-600">+593 XX XXX XXXX</p>
+                                                            <p className="text-neutral-600">info@theowlbodega.com</p>
                                                         </div>
                                                     </div>
                                                 </div>

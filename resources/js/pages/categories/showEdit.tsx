@@ -49,18 +49,18 @@ export default function EditCategory({ category }: { category: Category }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Editar Categoría" />
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-neutral-50">
                 <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
                     {/* Header */}
                     <div className="mb-8">
                         <div className="flex items-center justify-between">
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900">Editar Categoría</h1>
-                                <p className="mt-2 text-sm text-gray-600">Modifica la información de la categoría "{category.Nombre}"</p>
+                                <h1 className="text-3xl font-bold text-neutral-900">Editar Categoría</h1>
+                                <p className="mt-2 text-sm text-neutral-600">Modifica la información de la categoría "{category.Nombre}"</p>
                             </div>
                             <Link
                                 href={route('categories.index')}
-                                className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+                                className="inline-flex items-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
                             >
                                 <X className="mr-2 h-4 w-4" />
                                 Cancelar
@@ -96,7 +96,7 @@ export default function EditCategory({ category }: { category: Category }) {
                                                 {errors.name}
                                             </p>
                                         )}
-                                        <p className="text-sm text-gray-500">{data.name.length}/50 caracteres</p>
+                                        <p className="text-sm text-neutral-500">{data.name.length}/50 caracteres</p>
                                     </div>
 
                                     <div className="space-y-2">
@@ -129,7 +129,7 @@ export default function EditCategory({ category }: { category: Category }) {
                                                 {errors.state}
                                             </p>
                                         )}
-                                        <p className="text-sm text-gray-500">Las categorías inactivas no aparecen en el formulario de productos</p>
+                                        <p className="text-sm text-neutral-500">Las categorías inactivas no aparecen en el formulario de productos</p>
                                     </div>
                                 </div>
 
@@ -161,14 +161,14 @@ export default function EditCategory({ category }: { category: Category }) {
                                     <CardDescription>Así se verá la categoría en el sistema</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="rounded-lg border bg-gray-50 p-4">
+                                    <div className="rounded-lg border bg-neutral-50 p-4">
                                         <div className="flex items-center space-x-3">
                                             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
                                                 <Tag className="h-6 w-6 text-blue-600" />
                                             </div>
                                             <div className="min-w-0 flex-1">
-                                                <h4 className="text-lg font-medium text-gray-900">{data.name}</h4>
-                                                <p className="text-sm text-gray-600">ID: {category.CategoriaId}</p>
+                                                <h4 className="text-lg font-medium text-neutral-900">{data.name}</h4>
+                                                <p className="text-sm text-neutral-600">ID: {category.CategoriaId}</p>
                                             </div>
 
                                             <div className="flex-shrink-0">
@@ -196,12 +196,12 @@ export default function EditCategory({ category }: { category: Category }) {
                             </CardHeader>
                             <CardContent>
                                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                    <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
-                                        <span className="mb-1 block text-sm font-medium text-gray-700">ID de Categoría:</span>
-                                        <p className="text-lg font-semibold text-gray-900">{category.CategoriaId}</p>
+                                    <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-3">
+                                        <span className="mb-1 block text-sm font-medium text-neutral-700">ID de Categoría:</span>
+                                        <p className="text-lg font-semibold text-neutral-900">{category.CategoriaId}</p>
                                     </div>
-                                    <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
-                                        <span className="mb-1 block text-sm font-medium text-gray-700">Estado:</span>
+                                    <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-3">
+                                        <span className="mb-1 block text-sm font-medium text-neutral-700">Estado:</span>
 
                                         {data.state ? (
                                             <p className="text-lg font-semibold text-green-600">Activa</p>
