@@ -23,7 +23,7 @@ type Brand = {
     Estado: boolean;
 };
 
-const breadcrumbs: any[] = [
+const breadcrumbs = [
     {
         title: 'Dashboard',
         href: '/the-owl/public/dashboard',
@@ -37,7 +37,7 @@ export default function Index({ brands }: { brands: Brand[] }) {
     console.log({ brands });
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const { processing, delete: destroy } = useForm();
+    const {  delete: destroy } = useForm();
     const itemsPerPage = 15;
 
     const filteredBrands = useMemo(() => {

@@ -37,8 +37,8 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         // Laravel automáticamente valida y sanitiza
         return $this->model->create([
-            'Nombre' => $data['name'],
-            'Estado' => $data['state']
+            'Nombre' => $data['Nombre'],
+            'Estado' => $data['Estado']
         ]);
     }
 

@@ -4,129 +4,92 @@ namespace App\Repositories;
 
 use App\Interfaces\BrandSizeRepositoryInterface;
 use App\Models\BrandSize;
+use App\Models\Size;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
 
 class BrandSizeRepository implements BrandSizeRepositoryInterface
 {
-    protected $model;
+    protected $brandSizeModel;
+    protected $sizeModel;
+    protected $productModel;
 
-    public function __construct(BrandSize $model)
+
+    public function __construct(BrandSize $brandSizeModel, Size $sizeModel, Product $productModel)
     {
-        $this->model = $model;
+        $this->brandSizeModel = $brandSizeModel;
+        $this->sizeModel = $sizeModel;
+        $this->productModel = $productModel;
     }
 
     public function getAll(): Collection
     {
-        return $this->model
-            ->with(['brand:MarcaId,Nombre', 'size:TamanoId,Descripcion,UnidadMedida,Valor'])
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($brandSize) {
-                $brandSize->NombreMarca = $brandSize->brand->Nombre ?? '';
-                $brandSize->DescripcionTamano = $brandSize->size->descripcion_completa ?? '';
-                return $brandSize;
-            });
+        return $this->brandSizeModel->get();
     }
 
     public function getById(int $id): ?BrandSize
     {
-        return $this->model
-            ->with(['brand', 'size'])
-            ->find($id);
+        return $this->brandSizeModel->find($id);
     }
 
-    public function create(array $data): BrandSize
+    public function getProductCountForBrandSize(int $brandId, int $sizeId): int
     {
-        return $this->model->create([
-            'MarcaId' => $data['MarcaId'],
-            'TamanoId' => $data['TamanoId'],
-            'Estado' => $data['Estado'] ?? true
-        ]);
-    }
-
-    public function update(int $id, array $data): bool
-    {
-        $brandSize = $this->model->find($id);
-
-        if (!$brandSize) {
-            return false;
-        }
-
-        return $brandSize->update([
-            'Estado' => $data['Estado'] ?? $brandSize->Estado
-        ]);
-    }
-
-    public function delete(int $id): bool
-    {
-        $brandSize = $this->model->find($id);
-
-        if (!$brandSize) {
-            return false;
-        }
-
-        return $brandSize->delete();
+        return $this->productModel->where('TamanoId', $sizeId)->where('MarcaId', $brandId)->count();
     }
 
     public function getByBrand(int $brandId): Collection
     {
-        return $this->model
+        return $this->brandSizeModel->where('MarcaId', $brandId)
             ->with(['size:TamanoId,Descripcion,UnidadMedida,Valor'])
-            ->byBrand($brandId)
-            ->orderBy('created_at', 'desc')
             ->get();
     }
 
-    public function getBySize(int $sizeId): Collection
+    public function getUnassignedByBrand(int $brandId): Collection
     {
-        return $this->model
-            ->with(['brand:MarcaId,Nombre'])
-            ->bySize($sizeId)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $assignedSizeIds = $this->brandSizeModel->where('MarcaId', $brandId)->pluck('TamanoId');
+        return $this->sizeModel->whereNotIn('TamanoId', $assignedSizeIds)->get();
     }
 
-    public function getActive(): Collection
+    /**
+     * Crea una nueva asociación entre una marca y un tamaño.
+     */
+    public function createAssociation(int $brandId, int $sizeId): BrandSize
     {
-        return $this->model
-            ->active()
-            ->with(['brand:MarcaId,Nombre', 'size:TamanoId,Descripcion,UnidadMedida,Valor'])
-            ->orderBy('created_at', 'desc')
-            ->get();
-    }
-
-    public function toggleStatus(int $id): bool
-    {
-        $brandSize = $this->model->find($id);
-
-        if (!$brandSize) {
-            return false;
-        }
-
-        return $brandSize->Estado ? $brandSize->deactivate() : $brandSize->activate();
-    }
-
-    public function createAssociation(int $brandId, int $sizeId, bool $estado = true): BrandSize
-    {
-        return $this->model->firstOrCreate([
+        return $this->brandSizeModel->create([
             'MarcaId' => $brandId,
             'TamanoId' => $sizeId,
-        ], [
-            'Estado' => $estado
+            'Estado' => 1,
         ]);
     }
 
-    public function removeAssociation(int $brandId, int $sizeId): bool
+    /**
+     * Elimina una asociación existente entre una marca y un tamaño.
+     */
+    public function deleteAssociation(int $brandId, int $sizeId): bool
     {
-        $brandSize = $this->model
-            ->byBrand($brandId)
-            ->bySize($sizeId)
-            ->first();
+        return (bool) $this->brandSizeModel->where('MarcaId', $brandId)
+            ->where('TamanoId', $sizeId)
+            ->delete();
+    }
 
-        if (!$brandSize) {
-            return false;
+    /**
+     * Sincroniza las asociaciones de una marca con una lista de IDs de tamaños.
+     */
+    public function syncSizes(int $brandId, array $sizeIds): void
+    {
+
+        $currentSizeIds = $this->brandSizeModel->where('MarcaId', $brandId)->pluck('TamanoId')->toArray();
+
+        $sizesToDelete = array_diff($currentSizeIds, $sizeIds);
+        if (!empty($sizesToDelete)) {
+            $this->brandSizeModel->where('MarcaId', $brandId)
+                ->whereIn('TamanoId', $sizesToDelete)
+                ->delete();
         }
 
-        return $brandSize->delete();
+        $sizesToCreate = array_diff($sizeIds, $currentSizeIds);
+        foreach ($sizesToCreate as $sizeId) {
+            $this->createAssociation($brandId, $sizeId);
+        }
     }
 }

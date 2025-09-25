@@ -160,4 +160,43 @@ class BrandSizeController extends Controller
             'brands' => $brands,
         ]);
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'MarcaId' => 'required|integer|exists:marcas,MarcaId',
+            'TamanoId' => 'required|integer|exists:tamanos,TamanoId'
+        ]);
+
+        try {
+            $this->brandSizeRepository->createAssociation($request->MarcaId, $request->TamanoId);
+            return redirect()->back()->with('success', 'Tamaño asignado correctamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al asignar el tamaño: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Elimina una asignación de tamaño a una marca.
+     */
+    public function destroy(Request $request)
+    {
+        $request->validate([
+            'MarcaId' => 'required|integer|exists:marcas,MarcaId',
+            'TamanoId' => 'required|integer|exists:tamanos,TamanoId'
+        ]);
+
+        try {
+
+            $productCount = $this->brandSizeRepository->getProductCountForBrandSize($request->MarcaId, $request->TamanoId);
+            if ($productCount > 0) {
+                return redirect()->back()->with('error', "No se puede desasignar. Hay {$productCount} producto(s) usando este tamaño.");
+            }
+
+            $this->brandSizeRepository->deleteAssociation($request->MarcaId, $request->TamanoId);
+            return redirect()->back()->with('success', 'Tamaño desasignado correctamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al desasignar el tamaño: ' . $e->getMessage());
+        }
+    }
 }

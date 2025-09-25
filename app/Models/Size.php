@@ -9,17 +9,18 @@ class Size extends Model
 
     protected $table = 'tamanos';
     protected $primaryKey = 'TamanoId';
-    public $timestamps = true;
+    public $timestamps = false;
 
     protected $fillable = [
         'Descripcion',
         'UnidadMedida',
         'Valor',
+        'Activo'
     ];
 
     protected $casts = [
         'Valor' => 'decimal:2',
-
+        "Activo" => "boolean",
     ];
 
 
@@ -34,6 +35,11 @@ class Size extends Model
             ->withTimestamps();
     }
 
+    public function UnidadMedida()
+    {
+        return $this->belongsTo(MeassureUnit::class, 'UnidadMedida', 'UnidadId');
+    }
+
     public function isUsedByBrands()
     {
         return $this->brands()->exists();
@@ -43,7 +49,7 @@ class Size extends Model
     {
         return $this->hasMany(Product::class, 'TamanoId', 'TamanoId');
     }
-    
+
     public function canBeDeleted()
     {
         return !$this->isUsedByBrands() && $this->products_count === 0;

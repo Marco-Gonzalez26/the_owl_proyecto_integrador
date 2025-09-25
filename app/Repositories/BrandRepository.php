@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\BrandRepositoryInterface;
 use App\Models\Brand;
 use Illuminate\Database\Eloquent\Collection;
-use function _PHPStan_781aefaf6\React\Promise\all;
+
 
 class BrandRepository implements BrandRepositoryInterface
 {
@@ -77,5 +77,5 @@ class BrandRepository implements BrandRepositoryInterface
         return $this->model->updateSizeStatus($sizeId, $state);
     }
 
-    
+
 }

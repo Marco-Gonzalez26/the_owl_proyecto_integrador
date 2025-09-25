@@ -1,6 +1,6 @@
 <?php
 
-namespace Interfaces;
+namespace App\Interfaces;
 
 use App\Models\Size;
 use Illuminate\Database\Eloquent\Collection;

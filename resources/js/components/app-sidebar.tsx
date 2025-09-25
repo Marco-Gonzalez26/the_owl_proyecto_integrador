@@ -5,7 +5,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Bookmark, Box, Boxes, ChartNoAxesCombined, CircleDollarSign, Ruler, Tag, Users } from 'lucide-react';
+import { Bookmark, Box, Boxes, ChartNoAxesCombined, Ruler, Tag, Users } from 'lucide-react';
 
 const mainNavItems: NavItem[] = [
     {
@@ -42,11 +42,6 @@ const mainNavItems: NavItem[] = [
         title: 'Usuarios',
         href: '/the-owl/public/panel/usuarios',
         icon: Users,
-    },
-    {
-        title: 'Proveedores',
-        href: '/the-owl/public/panel/proveedores',
-        icon: CircleDollarSign,
     },
 ];
 

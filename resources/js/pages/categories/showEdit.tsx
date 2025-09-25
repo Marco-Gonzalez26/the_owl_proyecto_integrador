@@ -31,7 +31,7 @@ const breadcrumbs = [
 export default function EditCategory({ category }: { category: Category }) {
     const { data, setData, put, processing, errors } = useForm({
         name: category.Nombre,
-        state: category.Estado ? 1 : 0, // Default a true si no está definido
+        state: category.Estado ? 1 : 0, 
     });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

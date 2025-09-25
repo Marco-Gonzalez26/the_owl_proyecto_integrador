@@ -2,37 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BrandRequest;
 use App\Interfaces\BrandRepositoryInterface;
+use App\Interfaces\BrandSizeRepositoryInterface;
+use App\Interfaces\SizeRepositoryInterface;
 use App\Models\Brand;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class BrandController extends Controller
 {
     private $brandRepository;
-    public function __construct(BrandRepositoryInterface $brandRepository)
+    private $brandSizeRepository;
+    private $sizeRepository;
+    public function __construct(BrandRepositoryInterface $brandRepository, BrandSizeRepositoryInterface $brandSizeRepository, SizeRepositoryInterface $sizeRepository)
     {
         $this->brandRepository = $brandRepository;
+        $this->brandSizeRepository = $brandSizeRepository;
+        $this->sizeRepository = $sizeRepository;
     }
 
     public function index(): Response
     {
 
         $brands = $this->brandRepository->getAll();
-        
+
         return Inertia::render('brands/index', [
             'brands' => $brands
         ]);
     }
 
-    public function showCreate(int $id): Response
+    public function showCreate(): Response
     {
-        return Inertia::render('brands/create');
+        return Inertia::render('brands/showCreate');
     }
     public function showEdit(int $id): Response
     {
+        $associatedSizes = $this->brandSizeRepository->getByBrand($id);
+        $allSizes = $this->sizeRepository->getAll();
         $brandToEdit = $this->brandRepository->getById($id);
-        return Inertia::render('brands/edit', ["brandToEdit" => $brandToEdit]);
+        return Inertia::render('brands/showEdit', ["brandToEdit" => $brandToEdit, "associatedSizes" => $associatedSizes, "allSizes" => $allSizes]);
     }
     public function showById(int $id): Response
     {
@@ -46,14 +56,23 @@ class BrandController extends Controller
     {
         return $this->brandRepository->getById($id);
     }
-    public function create(array $data): Brand
+    public function store(BrandRequest $request): RedirectResponse
     {
-        return $this->brandRepository->create($data);
+
+        $validated = $request->validated();
+        $brand = $this->brandRepository->create($validated);
+        if (!$brand) return redirect()->back()->with('message', 'Marca no creada');
+
+        return redirect()->back()->with('message', 'Marca creada correctamente');
     }
 
-    public function update(int $id, array $data): bool
+    public function update(int $id, BrandRequest $request): RedirectResponse
     {
-        return $this->brandRepository->update($id, $data);
+        $validated = $request->validated();
+        $brand = $this->brandRepository->update($id, $validated);
+        if (!$brand) return redirect()->route('brands.index')->with('message', 'Marca no actualizada');
+
+        return redirect()->back()->with('message', 'Marca creada correctamente');
     }
     public function delete(int $id): bool
     {

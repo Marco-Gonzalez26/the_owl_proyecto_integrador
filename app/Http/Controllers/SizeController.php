@@ -3,66 +3,76 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\MeasureUnitRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Interfaces\SizeRepositoryInterface;
+use App\Http\Requests\SizeRequest;
+use Inertia\Inertia;
+use App\Interfaces\SizeRepositoryInterface;
 
 class SizeController extends Controller
 {
     private $sizeRepository;
-    public function __construct(SizeRepositoryInterface $sizeRepository)
+    private $measureUnitRepository;
+    public function __construct(SizeRepositoryInterface $sizeRepository, MeasureUnitRepositoryInterface $measureUnitRepository)
     {
         $this->sizeRepository = $sizeRepository;
+        $this->measureUnitRepository = $measureUnitRepository;
+    }
+
+    // Obtener tamaños
+    public function index()
+    {
+        $sizes = $this->sizeRepository->getAll();
+
+        return Inertia::render('sizes/index', [
+            'sizes' => $sizes,
+        ]);
+    }
+
+    // Mostrar creacion de tamaño
+    public function showCreate()
+    {
+        $measureUnits = $this->measureUnitRepository->getAll();
+
+
+        return Inertia::render('sizes/showCreate', [
+            'measureUnits' => $measureUnits
+        ]);
+    }
+    // Mostrar edicion de tamaño
+    public function showEdit(int $id)
+    {
+
+        $sizeToEdit = $this->sizeRepository->getById($id);
+        $measureUnits = $this->measureUnitRepository->getAll();
+        return Inertia::render('sizes/showEdit', [
+            'measureUnits' => $measureUnits,
+            'sizeToEdit' => $sizeToEdit
+        ]);
     }
 
     // Creacion de un nuevo tamaño
-    public function create(Request $request): RedirectResponse
+    public function store(SizeRequest $request): RedirectResponse
     {
-        $request->validate([
-            "descripcion" => "required|string|max:255",
-            "unidad_medida" => "required|string|max:10",
-            "valor" => "required|numeric|min:0",
-            "estado" => "boolean",
-        ]);
+        $validated = $request->validated();
 
-        try {
-            $exists = $this->sizeRepository->checkIfSizeValueExists($request->all());
 
-            if ($exists) {
-                return redirect(route("sizes.index"))->with('error', "Este tamaño ya existe");
-            }
+        $size = $this->sizeRepository->create($validated);
+        if (!$size) return redirect()->back()->with('error', "Error al crear tamaño")->withInput();
 
-            $this->sizeRepository->create($request->all());
-
-            return redirect()->with('success', "El tamaño ha sido creado correctamente");
-        } catch (\Exception $e) {
-            return redirect()->with('error', $e->getMessage());
-        }
+        return redirect()->back()->with('success', "El tamaño ha sido creado correctamente");
     }
 
     // Actualizar tamaño
-    public function update(Request $request, int $id): RedirectResponse
+    public function update(SizeRequest $request, int $id): RedirectResponse
     {
-        $request->validate([
-            "descripcion" => "required|string|max:255",
-            "unidad_medida" => "required|string|max:10",
-            "valor" => "required|numeric|min:0",
-            "estado" => "boolean",
-        ]);
+        $validated = $request->validated();
 
-        try {
-            $exists = $this->sizeRepository->checkIfSizeValueExists($request->all());
+        $editedSize = $this->sizeRepository->update($id, $validated);
+        if (!$editedSize) return redirect()->back()->withErrors("Error al actualizar tamaño");
 
-            if ($exists) {
-                return redirect()->with('error', "Este tamaño al que intenta actualizar ya existe");
-            }
-
-            $this->sizeRepository->update($id, $request->all());
-
-            return redirect(route("sizes.index"))->with('success', "El tamaño ha sido actualizado correctamente");
-        } catch (\Exception $e) {
-            return redirect(route('sizes.index'))->with('error', $e->getMessage());
-        }
+        return redirect()->back()->with("success", "El tamaño ha sido actualizado correctamente");
     }
 
     // Eliminar tamaño

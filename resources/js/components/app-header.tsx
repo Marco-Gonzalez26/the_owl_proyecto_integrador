@@ -33,11 +33,6 @@ const mainNavItems: NavItem[] = [
         icon: Handshake,
     },
     {
-        title: 'Marcas',
-        href: '/the-owl/public/marcas',
-        icon: Tag,
-    },
-    {
         title: 'Sobre nosotros',
         href: '/the-owl/public/sobre-nosotros',
         icon: Building,

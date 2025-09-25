@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CategoryRepositoryInterface;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 
@@ -34,19 +33,20 @@ class CategoriesController extends Controller
             'category' => $category
         ]);
     }
-    public function store(Request $request): RedirectResponse
+    public function store(CategoryRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'Nombre' => 'required|string|max:255',
-            'Descripcion' => 'string|max:255',
-            'Estado' => 'required|string'
-        ]);
+        $validated = $request->validated();
 
         $category = $this->categoryRepository->create($validated);
         if (!$category) {
             return redirect()->route('categories.index')->with('message', 'Categoría no creada');
         }
         return redirect()->route('categories.index')->with('message', 'Categoría creada correctamente');
+    }
+
+    public function showCreate(): InertiaResponse
+    {
+        return Inertia::render('categories/showCreate');
     }
     public function showEdit(int $id): InertiaResponse
     {
@@ -56,12 +56,9 @@ class CategoriesController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $id): RedirectResponse
+    public function update(CategoryRequest $request, int $id): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'state' => 'required|integer'
-        ]);
+        $validated = $request->validated();
         $updated = $this->categoryRepository->update($id, $validated);
         if (!$updated) {
             return redirect()->route('categories.index')->with('message', 'Categoría no actualizada');
