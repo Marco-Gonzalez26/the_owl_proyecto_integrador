@@ -10,11 +10,14 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SizeController;
+use App\Http\Controllers\UserController;
+use App\Mail\OrderConfirmationEmail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Middleware\CheckEmployeeOrAdmin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -40,16 +43,26 @@ Route::middleware([CheckEmployeeOrAdmin::class, "auth"])->group(function () {
         Route::get('/categorias/crear', [CategoriesController::class, 'showCreate'])->name('categories.create');
         Route::get('/categorias/{id}/editar', [CategoriesController::class, 'showEdit'])->name('categories.edit');
 
+        // Users
+        Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
+        Route::get('/usuarios/crear', [UserController::class, 'showCreate'])->name('users.create');
+        Route::get('/usuarios/{id}/editar', [UserController::class, 'showEdit'])->name('users.edit');
+
         // Brands
         Route::get('/marcas', [BrandController::class, 'index'])->name('brands.index');
         Route::get('/marcas/{id}/editar', [BrandController::class, 'showEdit'])->name('brands.edit');
         Route::get('/marcas/crear', [BrandController::class, 'showCreate'])->name('brands.create');
 
-        // Sized
+        // Sizes
         Route::get('/tamaños', [SizeController::class, 'index'])->name('sizes.index');
         Route::get('/tamaños/crear', [SizeController::class, 'showCreate'])->name('sizes.create');
         Route::get('/tamaños/{id}/editar', [SizeController::class, 'showEdit'])->name('sizes.edit');
 
+        //Orders
+        Route::get('/pedidos', [OrderController::class, 'index'])->name('orders.index');
+        Route::get("/pedidos/{id}", [OrderController::class, 'show'])->name('orders.show');
+        Route::get('/pedidos/{id}', [OrderController::class, 'showEdit'])->name('orders.showEdit');
+        Route::put('/pedidos/{id}/edit', [OrderController::class, 'update'])->name('orders.update');
 
 
 
@@ -79,12 +92,22 @@ Route::middleware([CheckEmployeeOrAdmin::class, "auth"])->group(function () {
         Route::delete("/api/marcas/{id}/eliminar", [BrandController::class, 'destroy'])->name('api.brands.destroy');
 
         // BrandSize
+        Route::get('/marcas/{brandId}/tamaños', [BrandSizeController::class, 'getSizesByBrandId'])
+            ->name('api.brands.sizes.by-brand');
 
         Route::post('/api/marca_tamaño/crear', [BrandSizeController::class, 'store'])->name('api.brand_sizes.create');
         Route::delete('/api/marca_tamaño/eliminar', [BrandSizeController::class, 'destroy'])->name('api.brand_sizes.destroy');
 
+        // Orders
+        Route::put('/pedidos/{id}/edit', [OrderController::class, 'update'])->name('api.orders.update');
+
+        // Users
+        Route::post('/api/usuarios/crear', [UserController::class, 'store'])->name('api.users.store');
+        Route::put('/api/usuarios/{id}/editar', [UserController::class, 'update'])->name('api.users.update');
+        Route::delete('/api/usuarios/{id}/eliminar', [UserController::class, 'destroy'])->name('api.users.destroy');
     });
 });
+
 
 
 Route::get('/catalogo', [CatalogController::class, 'index'])->name('catalog.index');

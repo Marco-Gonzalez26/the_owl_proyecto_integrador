@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BrandRequest;
+use App\Http\Requests\EditBrandRequest;
 use App\Interfaces\BrandRepositoryInterface;
 use App\Interfaces\BrandSizeRepositoryInterface;
 use App\Interfaces\SizeRepositoryInterface;
@@ -66,7 +67,7 @@ class BrandController extends Controller
         return redirect()->back()->with('message', 'Marca creada correctamente');
     }
 
-    public function update(int $id, BrandRequest $request): RedirectResponse
+    public function update(int $id, EditBrandRequest $request): RedirectResponse
     {
         $validated = $request->validated();
         $brand = $this->brandRepository->update($id, $validated);

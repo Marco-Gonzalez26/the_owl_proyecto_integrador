@@ -124,7 +124,7 @@ class BrandSizeController extends Controller
     }
 
     /**
-     * API: Obtener tamaños activos de una marca
+     *  Obtener tamaños activos de una marca
      */
     public function getSizesByBrand(Brand $brand)
     {
@@ -177,7 +177,7 @@ class BrandSizeController extends Controller
     }
 
     /**
-     * Elimina una asignación de tamaño a una marca.
+     * Eliminar  una asignación de tamaño a una marca.
      */
     public function destroy(Request $request)
     {
@@ -198,5 +198,13 @@ class BrandSizeController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error al desasignar el tamaño: ' . $e->getMessage());
         }
+    }
+
+    public function getSizesByBrandId(int $brandId)
+    {
+
+        $sizes = $this->brandSizeRepository->getByBrand($brandId);
+
+        return response()->json($sizes->pluck('size'));
     }
 }

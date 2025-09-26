@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\CloudinaryServiceInterface;
 use App\Interfaces\OrderItemRepositoryInterface;
 use App\Interfaces\OrderRepositoryInterface;
 use App\Interfaces\ProductRepositoryInterface;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
@@ -21,12 +23,15 @@ class CheckoutController extends Controller
     protected $orderItemRepository;
     protected $productRepository;
 
-    public function __construct(StripeClient $stripe, OrderRepositoryInterface $orderRepository, OrderItemRepositoryInterface $orderItemRepository, ProductRepositoryInterface $productRepository)
+    protected $cloudinaryService;
+
+    public function __construct(StripeClient $stripe, OrderRepositoryInterface $orderRepository, OrderItemRepositoryInterface $orderItemRepository, ProductRepositoryInterface $productRepository, CloudinaryServiceInterface $cloudinaryService)
     {
         $this->stripe = $stripe;
         $this->orderRepository = $orderRepository;
         $this->orderItemRepository = $orderItemRepository;
         $this->productRepository = $productRepository;
+        $this->cloudinaryService = $cloudinaryService;
     }
 
     public function createCartCheckoutSession(Request $request)
@@ -160,7 +165,6 @@ class CheckoutController extends Controller
     {
 
 
-        // TODO: Enviar mensaje al whatsapp de la empresa para el envio
         $order = null;
         $user = Auth::check() ? Auth::user() : null;
         try {
@@ -171,14 +175,39 @@ class CheckoutController extends Controller
                 'Monto' => $session->amount_total / 100,
                 'Moneda' => $session->currency,
                 'EstadoPago' => $session->payment_status === 'paid' ? 'pagado' : 'pendiente',
-                'Estado' => 'pagado',
+                'Estado' => 'preparando',
                 'UsuarioId' =>  $user->id,
                 "DireccionFacturacion" => $user->direccion,
                 "DireccionEnvio" => $user->direccion,
-                ""
-            ]);
 
-            Log::info('Order creado', ['order' => $order]);
+            ]);
+            // Log::info("Creando Comprobante");
+            // Log::info("Información", ["order" => $order]);
+            // try {
+
+            //     $pdf = Pdf::loadView('orders.pdf', [
+            //         'order' => $order
+            //     ]);
+            //     $tempPath = storage_path('app/public/pedidos/pedido_' . $order->PedidoId . '.pdf');
+            //     $pdf->save($tempPath);
+            //     $cloudUrl = $this->cloudinaryService->uploadFile($tempPath, ['folder' => 'pedidos'], 'raw');
+            //     Log::info('Order creado', ["cloud_url" => $cloudUrl]);
+
+            //     $order->Comprobante = $cloudUrl;
+
+            //     $order->save();
+            //     Log::info("Comprobante creado");
+            // } catch (\Exception $e) {
+            //     Log::info("Error creando comprobante", ["error" => $e->getMessage()]);
+            // }
+
+
+
+            // Log::info('Order creado', ['order' => $order]);
+            // return response()->json([
+            //     'order' => $order,
+            //     'pdf_url' => $cloudUrl
+            // ]);
         } catch (\Exception $e) {
             Log::info('Error creando order', ['error' => $e->getMessage()]);
             return redirect()->back()->withErrors($e->getMessage());

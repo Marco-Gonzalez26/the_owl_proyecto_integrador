@@ -13,7 +13,7 @@ use App\Interfaces\RolesRepositoryInterface;
 use App\Interfaces\SizeRepositoryInterface;
 use App\Interfaces\MeasureUnitRepositoryInterface;
 use App\Interfaces\BrandSizeRepositoryInterface;
-
+use App\Interfaces\UserRepositoryInterface;
 use App\Repositories\BrandSizeRepository;
 
 use App\Repositories\BrandRepository;
@@ -25,7 +25,7 @@ use App\Repositories\ProductRepository;
 use App\Repositories\RolesRepository;
 use App\Repositories\SizeRepository;
 use App\Repositories\MeasureUnitRepository;
-
+use App\Repositories\UserRepository;
 use App\Services\CloudinaryService;
 
 use Illuminate\Support\ServiceProvider;
@@ -44,6 +44,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->bind(OrderItemRepositoryInterface::class, OrderItemRepository::class);
         $this->app->bind(BrandSizeRepositoryInterface::class, BrandSizeRepository::class);
+
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
 
 
 

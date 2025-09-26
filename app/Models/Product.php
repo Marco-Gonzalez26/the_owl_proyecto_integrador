@@ -17,7 +17,8 @@ class Product extends Model
         'Precio',
         'Stock',
         'Imagen',
-        "CategoriaId"
+        "CategoriaId",
+        "MinimoMayorista"
     ];
     protected $casts = [
         'Precio' => 'decimal:2',
@@ -25,6 +26,8 @@ class Product extends Model
         "CategoriaId" => "integer",
         "ProveedorId" => "integer",
         "MarcaId" => "integer",
+        "PrecioMayorista" => "decimal:2",
+        "MinimoMayorista" => "integer",
     ];
 
 

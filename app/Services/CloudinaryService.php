@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Config\CloudinaryConfig;
 use App\Interfaces\CloudinaryServiceInterface;
+use Illuminate\Support\Facades\Log;
 
 class CloudinaryService implements CloudinaryServiceInterface
 {
@@ -12,19 +13,23 @@ class CloudinaryService implements CloudinaryServiceInterface
     {
         $this->uploadApi = $config->getCloudinaryUploadAPI();
     }
-    public function uploadImage($file, $options = [])
+    public function uploadFile($file, $options = [], $resourceType = 'image')
     {
         $defaultOptions = [
             'folder' => 'the_owl',
-            'resource_type' => 'image',
             'overwrite' => true,
-            'use_filename' => true
+            'use_filename' => true,
         ];
 
         $combinedOptions = array_merge($defaultOptions, $options);
-        $filePath = is_string($file) ? $file : $file->getRealPath();
-        $result = $this->uploadApi->upload($filePath, $combinedOptions);
+        $combinedOptions['resource_type'] = $resourceType;
 
+        $filePath = is_string($file) ? $file : $file->getRealPath();
+        $result = $this->uploadApi->upload(
+            $filePath,
+            $combinedOptions
+        );
+        Log::info($result['secure_url']);
         return $result['secure_url'] ?? null;
     }
 }

@@ -54,7 +54,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild isActive={false}>
-                            <Link href="/the-owl/public/dashboard" prefetch>
+                            <Link href="/the-owl/public/panel" prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

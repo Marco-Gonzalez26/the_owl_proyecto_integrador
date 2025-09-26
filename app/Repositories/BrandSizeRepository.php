@@ -40,7 +40,9 @@ class BrandSizeRepository implements BrandSizeRepositoryInterface
     public function getByBrand(int $brandId): Collection
     {
         return $this->brandSizeModel->where('MarcaId', $brandId)
-            ->with(['size:TamanoId,Descripcion,UnidadMedida,Valor'])
+            ->with(["size" => function($query) {
+                $query->with("UnidadMedida");
+            }])
             ->get();
     }
 

@@ -2,7 +2,7 @@
 
 namespace Interfaces;
 
-use Models\Provider;
+use App\Models\Provider;
 
 interface ProviderRepositoryInterface
 {

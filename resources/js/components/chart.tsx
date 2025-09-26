@@ -8,7 +8,7 @@ export const Chart = ({ chartData, chartConfig }: { chartData: any; chartConfig:
                 <CartesianGrid vertical={false} />
                 <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value.slice(0, 3)} />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="product" name="Ventas" fill="var(--chart-3)" radius={[10, 10, 0, 0]} />
+                <Bar dataKey="pedidos" name="Ventas" fill="var(--chart-3)" radius={[10, 10, 0, 0]} />
             </BarChart>
         </ChartContainer>
     );

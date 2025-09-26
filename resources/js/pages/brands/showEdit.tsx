@@ -52,7 +52,7 @@ export default function Edit({ brandToEdit, allSizes, associatedSizes }: Props) 
         const isAssociated = associatedSizes.some((assoc) => assoc.TamanoId === sizeId);
 
         if (isAssociated) {
-            // Si está asociado, lo eliminamos
+            
             if (confirm('¿Estás seguro de que quieres quitar este tamaño de la marca?')) {
                 router.delete(route('api.brand_sizes.destroy'), {
                     data: { MarcaId: brandToEdit.MarcaId, TamanoId: sizeId },

@@ -4,5 +4,5 @@ namespace App\Interfaces;
 
 interface CloudinaryServiceInterface
 {
-    public function uploadImage($file, array $options = []);
+    public function uploadFile($file, array $options = [], $resourceType = 'image');
 }

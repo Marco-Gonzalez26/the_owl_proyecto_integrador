@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface OrderRepositoryInterface
 {
+    public function getAll(): Collection;
     public function create(array $data): ?Order;
     public function update(int $id, array $data): void;
     public function delete(int $id): void;

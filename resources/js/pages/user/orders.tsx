@@ -5,7 +5,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import AppHeaderLayout from '@/layouts/app/app-header-layout';
 import { Head } from '@inertiajs/react';
-import { Calendar, CheckCircle, Clock, CreditCard, Download, Eye, Package, Truck, XCircle } from 'lucide-react';
+import { Calendar, CheckCircle, Clock, CreditCard, Eye, Package, Truck, XCircle } from 'lucide-react';
 import { useState } from 'react';
 
 interface ArticuloPedido {
@@ -22,10 +22,11 @@ interface Pedido {
     StripeSesionId: string;
     Monto: number;
     Moneda: string;
-    Estado: 'pendiente' | 'pagado' | 'enviado' | 'entregado' | 'cancelado';
+    Estado: 'pendiente de entrega' | 'en espera de retiro' | 'enviado' | 'entregado' | 'cancelado' | 'preparando';
     EstadoPago: 'pendiente' | 'pagado' | 'fallido' | 'reembolsado';
     CreatedAt: string;
     Articulos: ArticuloPedido[];
+    Codigo: string;
 }
 
 interface OrdersProps {
@@ -34,14 +35,20 @@ interface OrdersProps {
 
 export default function UserOrders({ orders }: OrdersProps) {
     const [expandedOrder, setExpandedOrder] = useState<number | null>(null);
-    console.log('🛒 orders', orders);
+
     const formatPrice = (price: number, currency: string = 'USD') => {
         return new Intl.NumberFormat('es-ES', {
             style: 'currency',
             currency: currency,
         }).format(price);
     };
+    const handlePdf = async (orderId) => {
+        const res = await fetch(`/orders/${orderId}/pdf-upload`);
+        const data = await res.json();
 
+        // Abrir PDF en otra pestaña 
+        window.open(data.cloud_url, '_blank');
+    };
     const formatDate = (dateString: string) => {
         return new Intl.DateTimeFormat('es-ES', {
             year: 'numeric',
@@ -55,6 +62,21 @@ export default function UserOrders({ orders }: OrdersProps) {
     const getStatusBadge = (estado: string, estadoPago: string) => {
         if (estadoPago === 'pagado') {
             switch (estado) {
+                case 'preparando':
+                    return (
+                        <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-200">
+                            <Clock className="mr-1 h-3 w-3" />
+                            Preparando
+                        </Badge>
+                    );
+                case 'en espera de retiro':
+                    return (
+                        <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-200">
+                            <Clock className="mr-1 h-3 w-3" />
+                            En espera de retiro
+                        </Badge>
+                    );
+
                 case 'pagado':
                     return (
                         <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
@@ -153,7 +175,7 @@ export default function UserOrders({ orders }: OrdersProps) {
                                             </div>
                                             <div className="flex items-center text-sm text-neutral-600">
                                                 <Package className="mr-2 h-4 w-4" />
-                                                ID: {order.StripeSesionId.slice(-8)}
+                                                Código: {order.Codigo}
                                             </div>
                                         </div>
                                     </CardHeader>

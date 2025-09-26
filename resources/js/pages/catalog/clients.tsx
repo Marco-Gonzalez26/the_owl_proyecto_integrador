@@ -39,7 +39,7 @@ export default function Catalog({ products, categories }: CatalogProps) {
     const [showFilters, setShowFilters] = useState(false);
     const { cart, addToCart, removeFromCart } = useCart();
     const activeCategories = categories.filter((category) => category.Estado);
-    console.log({ cart });
+ 
     // Función para limpiar filtros
     const clearFilters = () => {
         setSearchTerm('');

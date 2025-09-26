@@ -14,145 +14,127 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/admin-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { AlertTriangle, Beer, Coffee, Package, Pen, Plus, Search, Trash, Wine } from 'lucide-react';
+import { Mail, MapPin, Pen, Phone, Plus, Search, Shield, Trash, User, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
-type Product = {
-    ProductoId: number;
-    Nombre: string;
-    Descripcion: string;
-    Precio: number;
-    Stock: number;
-    Imagen: string;
-    CategoriaId: number;
-    NombreCategoria: string;
+type User = {
+    id: number;
+    nombre_usuario: string;
+    email: string;
+    nombre_completo: string;
+    correo: string;
+    rol: number;
+    direccion: string;
+    telefono: string;
+    identificacion: string;
+    role?: {
+        RolId: number;
+        Nombre: string;
+        Descripcion: string;
+    };
+    created_at: string;
+    updated_at: string;
 };
 
 const breadcrumbs: any[] = [
     {
-        title: 'Panel de Control',
-        href: '/the-owl/public/panel',
+        title: 'Dashboard',
+        href: '/the-owl/public/dashboard',
     },
     {
-        title: 'Productos',
-        href: '/the-owl/public/panel/productos',
+        title: 'Usuarios',
+        href: '/the-owl/public/dashboard/users',
     },
 ];
-export default function Index({ products }: { products: Product[] }) {
+
+export default function Index({ users }: { users: User[] }) {
     const [searchTerm, setSearchTerm] = useState('');
-    const [categoryFilter, setCategoryFilter] = useState('all');
-    const [stockFilter, setStockFilter] = useState('all');
+    const [roleFilter, setRoleFilter] = useState('all');
     const [currentPage, setCurrentPage] = useState(1);
     const { processing, delete: destroy } = useForm();
     const itemsPerPage = 15;
 
-    const categories = useMemo(() => {
-        const uniqueCategories = Array.from(
+    const roles = useMemo(() => {
+        const uniqueRoles = Array.from(
             new Set(
-                products.map((p) => {
-                    return { CategoriaId: p.CategoriaId, Nombre: p.NombreCategoria };
+                users.map((u) => {
+                    return { RolId: u.role?.RolId || u.rol, Nombre: u.role?.Nombre || 'Sin rol' };
                 }),
             ),
         );
-        return uniqueCategories;
-    }, [products]);
+        return uniqueRoles;
+    }, [users]);
 
-    const filteredProducts = useMemo(() => {
-        return products.filter((product) => {
+    const filteredUsers = useMemo(() => {
+        return users.filter((user) => {
             const matchesSearch =
-                product.Nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.Descripcion.toLowerCase().includes(searchTerm.toLowerCase());
+                user.nombre_usuario.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.nombre_completo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.correo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.identificacion.toLowerCase().includes(searchTerm.toLowerCase());
 
-            const matchesCategory = categoryFilter === 'all' || product.NombreCategoria === categoryFilter;
+            const matchesRole = roleFilter === 'all' || user.role?.Nombre === roleFilter || (roleFilter === 'Sin rol' && !user.role);
 
-            const matchesStock =
-                stockFilter === 'all' ||
-                (stockFilter === 'in-stock' && product.Stock > 0) ||
-                (stockFilter === 'out-of-stock' && product.Stock === 0) ||
-                (stockFilter === 'low-stock' && product.Stock > 0 && product.Stock <= 10);
-
-            return matchesSearch && matchesCategory && matchesStock;
+            return matchesSearch && matchesRole;
         });
-    }, [products, searchTerm, categoryFilter, stockFilter]);
+    }, [users, searchTerm, roleFilter]);
 
-    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+    const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
 
-    const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('es-EC', {
-            style: 'currency',
-            currency: 'USD',
-        }).format(price);
+    const getRoleBadge = (user: User) => {
+        const roleName = user.role?.Nombre || 'Sin rol';
+        const roleColors: { [key: string]: string } = {
+            Cliente: 'bg-green-100 text-green-800',
+            Empleado: 'bg-blue-100 text-blue-800',
+            Administrador: 'bg-red-100 text-red-800',
+            'Sin rol': 'bg-gray-100 text-gray-800',
+        };
+
+        const colorClass = roleColors[roleName] || 'bg-gray-100 text-gray-800';
+
+        return (
+            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${colorClass}`}>
+                <Shield className="mr-1 h-3 w-3" />
+                {roleName}
+            </span>
+        );
     };
 
-    const getStockBadge = (stock: number) => {
-        if (stock === 0) {
-            return (
-                <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-semibold text-red-800">
-                    <AlertTriangle className="mr-1 h-3 w-3" />
-                    Sin Stock
-                </span>
-            );
-        } else if (stock <= 10) {
-            return (
-                <span className="inline-flex items-center rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-semibold text-orange-800">
-                    <AlertTriangle className="mr-1 h-3 w-3" />
-                    Stock Bajo ({stock})
-                </span>
-            );
-        } else if (stock <= 50) {
-            return (
-                <span className="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-semibold text-yellow-800">
-                    Stock Medio ({stock})
-                </span>
-            );
-        } else {
-            return (
-                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-800">
-                    Stock Alto ({stock})
-                </span>
-            );
-        }
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('es-EC', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        });
     };
 
-    const getCategoryIcon = (category: string) => {
-        const iconClass = 'w-4 h-4 mr-1';
-        switch (category.toLowerCase()) {
-            case 'cervezas':
-                return <Beer className={iconClass} />;
-            case 'vinos':
-                return <Wine className={iconClass} />;
-            case 'licores':
-                return <Coffee className={iconClass} />;
-            default:
-                return <Package className={iconClass} />;
-        }
-    };
-
-    const deleteProduct = (id: number) => {
-        destroy(`/the-owl/public/dashboard/api/products/${id}/delete`, {
+    const deleteUser = (id: number) => {
+        destroy(`/the-owl/public/dashboard/api/users/${id}/delete`, {
             onSuccess: () => {
-                toast.success('Producto eliminado correctamente');
+                toast.success('Usuario eliminado correctamente');
                 setCurrentPage(1);
             },
             onError: () => {
-                toast.error('Error al eliminar producto');
+                toast.error('Error al eliminar usuario');
             },
         });
     };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Inventario de Productos" />
+            <Head title="Gestión de Usuarios" />
             <div className="min-h-screen bg-neutral-50">
                 <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                     {/* Header del Panel */}
                     <div className="mb-8">
                         <div className="flex items-center justify-between">
                             <div>
-                                <h1 className="text-3xl font-bold text-neutral-900">Panel de Control - Productos</h1>
-                                <p className="mt-2 text-sm text-neutral-600">Gestión de inventario para bodega de bebidas</p>
+                                <h1 className="text-3xl font-bold text-neutral-900">Panel de Control - Usuarios</h1>
+                                <p className="mt-2 text-sm text-neutral-600">Gestión de usuarios del sistema</p>
                             </div>
                             <div className="text-right">
                                 <p className="text-sm text-neutral-500">Última actualización</p>
@@ -167,10 +149,10 @@ export default function Index({ products }: { products: Product[] }) {
                             </div>
                         </div>
                         <div className="text-right">
-                            <Link href={route('products.create')} className="">
+                            <Link href={route('users.create')} className="">
                                 <Button variant="outline" className="mr-2 hover:cursor-pointer">
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Crear Producto
+                                    Crear Usuario
                                 </Button>
                             </Link>
                         </div>
@@ -182,14 +164,14 @@ export default function Index({ products }: { products: Product[] }) {
                             <h3 className="text-lg font-medium text-neutral-900">Filtros de Búsqueda</h3>
                         </div>
                         <div className="p-6">
-                            <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-4">
+                            <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-3">
                                 <div>
-                                    <Label className="mb-2 block text-sm font-medium text-neutral-700">Buscar producto</Label>
+                                    <Label className="mb-2 block text-sm font-medium text-neutral-700">Buscar usuario</Label>
                                     <div className="relative">
                                         <Search className="absolute top-3 left-3 h-4 w-4 text-neutral-400" />
                                         <Input
                                             type="text"
-                                            placeholder="Nombre o descripción..."
+                                            placeholder="Nombre, email, identificación..."
                                             value={searchTerm}
                                             onChange={(e) => {
                                                 setSearchTerm(e.target.value);
@@ -201,45 +183,24 @@ export default function Index({ products }: { products: Product[] }) {
                                 </div>
 
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-neutral-700">Categoría</label>
+                                    <label className="mb-2 block text-sm font-medium text-neutral-700">Rol</label>
                                     <Select
-                                        value={categoryFilter}
+                                        value={roleFilter}
                                         onValueChange={(value) => {
-                                            setCategoryFilter(value);
+                                            setRoleFilter(value);
                                             setCurrentPage(1);
                                         }}
                                     >
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Seleccionar categoría" />
+                                            <SelectValue placeholder="Seleccionar rol" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="all">Todas las categorías</SelectItem>
-                                            {categories.map((category) => (
-                                                <SelectItem key={category.CategoriaId} value={category.Nombre}>
-                                                    {category.Nombre}
+                                            <SelectItem value="all">Todos los roles</SelectItem>
+                                            {roles.map((role) => (
+                                                <SelectItem key={role.RolId} value={role.Nombre}>
+                                                    {role.Nombre}
                                                 </SelectItem>
                                             ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                <div>
-                                    <label className="mb-2 block text-sm font-medium text-neutral-700">Estado de Stock</label>
-                                    <Select
-                                        value={stockFilter}
-                                        onValueChange={(value) => {
-                                            setStockFilter(value);
-                                            setCurrentPage(1);
-                                        }}
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Seleccionar estado" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="all">Todos los estados</SelectItem>
-                                            <SelectItem value="in-stock">Con stock</SelectItem>
-                                            <SelectItem value="low-stock">Stock bajo</SelectItem>
-                                            <SelectItem value="out-of-stock">Sin stock</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
@@ -250,8 +211,7 @@ export default function Index({ products }: { products: Product[] }) {
                                         variant="outline"
                                         onClick={() => {
                                             setSearchTerm('');
-                                            setCategoryFilter('all');
-                                            setStockFilter('all');
+                                            setRoleFilter('all');
                                             setCurrentPage(1);
                                         }}
                                     >
@@ -262,14 +222,14 @@ export default function Index({ products }: { products: Product[] }) {
                         </div>
                     </div>
 
-                    {/* Tabla de Productos */}
+                    {/* Tabla de Usuarios */}
                     <div className="rounded-lg bg-white shadow">
                         <div className="border-b border-neutral-200 px-6 py-4">
                             <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-medium text-neutral-900">Inventario de Productos ({filteredProducts.length})</h3>
+                                <h3 className="text-lg font-medium text-neutral-900">Lista de Usuarios ({filteredUsers.length})</h3>
                                 <p className="text-sm text-neutral-500">
-                                    Mostrando {Math.min(startIndex + 1, filteredProducts.length)} -{' '}
-                                    {Math.min(startIndex + itemsPerPage, filteredProducts.length)} de {filteredProducts.length}
+                                    Mostrando {Math.min(startIndex + 1, filteredUsers.length)} -{' '}
+                                    {Math.min(startIndex + itemsPerPage, filteredUsers.length)} de {filteredUsers.length}
                                 </p>
                             </div>
                         </div>
@@ -278,77 +238,81 @@ export default function Index({ products }: { products: Product[] }) {
                             <table className="min-w-full divide-y divide-neutral-200">
                                 <thead className="bg-neutral-50">
                                     <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">Código</th>
-                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">Producto</th>
-                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">Categoría</th>
+                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">ID</th>
+                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">Usuario</th>
+                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">Contacto</th>
+                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">Rol</th>
                                         <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">
-                                            Precio Unitario
+                                            Fecha Registro
                                         </th>
-                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">Stock</th>
-                                        <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-neutral-900 uppercase">
-                                            Valor Total
+                                        <th className="px-6 py-3 text-right text-xs font-medium tracking-wider text-neutral-900 uppercase">
+                                            Acciones
                                         </th>
-                                        <th className="px-6 py-3 text-right text-xs font-medium tracking-wider text-neutral-900 uppercase">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-neutral-200 bg-white">
-                                    {paginatedProducts.length === 0 ? (
+                                    {paginatedUsers.length === 0 ? (
                                         <tr>
-                                            <td colSpan={7} className="px-6 py-12 text-center">
+                                            <td colSpan={6} className="px-6 py-12 text-center">
                                                 <div className="text-neutral-500">
-                                                    <Package className="mx-auto mb-4 h-12 w-12 text-neutral-400" />
-                                                    <h3 className="mb-2 text-lg font-medium">No se encontraron productos</h3>
+                                                    <Users className="mx-auto mb-4 h-12 w-12 text-neutral-400" />
+                                                    <h3 className="mb-2 text-lg font-medium">No se encontraron usuarios</h3>
                                                     <p>Intenta ajustar los filtros de búsqueda</p>
                                                 </div>
                                             </td>
                                         </tr>
                                     ) : (
-                                        paginatedProducts.map((product) => (
-                                            <tr key={product.ProductoId} className="hover:bg-neutral-50">
+                                        paginatedUsers.map((user) => (
+                                            <tr key={user.id} className="hover:bg-neutral-50">
                                                 <td className="px-6 py-4 font-mono text-sm whitespace-nowrap text-neutral-900">
-                                                    #{String(product.ProductoId).padStart(4, '0')}
+                                                    #{String(user.id).padStart(4, '0')}
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-start space-x-3">
                                                         <div className="flex-shrink-0">
-                                                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-100">
-                                                                <picture>
-                                                                    <source srcSet={product.Imagen} type="image/webp" />
-                                                                    <img
-                                                                        src={product.Imagen}
-                                                                        alt={product.Nombre}
-                                                                        className="h-10 w-10 object-cover"
-                                                                    />
-                                                                </picture>
+                                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
+                                                                <User className="h-5 w-5 text-blue-600" />
                                                             </div>
                                                         </div>
                                                         <div className="min-w-0 flex-1">
                                                             <Link
-                                                                href={route('product.show', product.ProductoId)}
+                                                                href={route('users.edit', user.id)}
                                                                 className="block truncate text-sm font-medium text-neutral-900 hover:text-blue-600"
                                                             >
-                                                                {product.Nombre}
+                                                                {user.nombre_completo || user.nombre_usuario}
                                                             </Link>
-                                                            <p className="mt-1 line-clamp-2 text-sm text-neutral-500">{product.Descripcion}</p>
+                                                            <p className="mt-1 text-sm text-neutral-500">@{user.nombre_usuario}</p>
+                                                            <p className="mt-1 text-xs text-neutral-400">ID: {user.identificacion}</p>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
-                                                        {getCategoryIcon(product.NombreCategoria)}
-                                                        {product.NombreCategoria}
-                                                    </span>
+                                                <td className="px-6 py-4">
+                                                    <div className="space-y-1">
+                                                        <div className="flex items-center text-sm text-neutral-900">
+                                                            <Mail className="mr-2 h-3 w-3" />
+                                                            {user.email || user.correo || 'No especificado'}
+                                                        </div>
+                                                        {user.telefono && (
+                                                            <div className="flex items-center text-sm text-neutral-500">
+                                                                <Phone className="mr-2 h-3 w-3" />
+                                                                {user.telefono}
+                                                            </div>
+                                                        )}
+                                                        {user.direccion && (
+                                                            <div className="flex items-center text-sm text-neutral-500">
+                                                                <MapPin className="mr-2 h-3 w-3" />
+                                                                <span className="max-w-xs truncate">{user.direccion}</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </td>
-                                                <td className="px-6 py-4 text-sm font-semibold whitespace-nowrap text-neutral-900">
-                                                    {formatPrice(product.Precio)}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">{getStockBadge(product.Stock)}</td>
-                                                <td className="px-6 py-4 text-sm font-semibold whitespace-nowrap text-neutral-900">
-                                                    {formatPrice(product.Precio * product.Stock)}
+                                                <td className="px-6 py-4 whitespace-nowrap">{getRoleBadge(user)}</td>
+                                                <td className="px-6 py-4 text-sm whitespace-nowrap text-neutral-900">
+                                                    {formatDate(user.created_at)}
                                                 </td>
                                                 <td className="flex items-center gap-2 px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
                                                     <Link
-                                                        href={route('products.edit', product.ProductoId)}
+                                                        href={route('users.edit', user.id)}
                                                         className="inline-flex items-center rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm leading-4 font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
                                                     >
                                                         <Pen className="h-4 w-4" />
@@ -356,7 +320,7 @@ export default function Index({ products }: { products: Product[] }) {
                                                     <Dialog>
                                                         <DialogTrigger>
                                                             <Button
-                                                                variant={product.Stock > 0 ? 'destructive' : 'outline'}
+                                                                variant="destructive"
                                                                 className="flex items-center justify-center hover:cursor-pointer"
                                                             >
                                                                 <Trash className="h-4 w-4" />
@@ -364,16 +328,17 @@ export default function Index({ products }: { products: Product[] }) {
                                                         </DialogTrigger>
                                                         <DialogContent>
                                                             <DialogHeader>
-                                                                <DialogTitle>Eliminar producto</DialogTitle>
+                                                                <DialogTitle>Eliminar usuario</DialogTitle>
                                                                 <DialogDescription>
-                                                                    ¿Estás seguro de que quieres eliminar este producto?
+                                                                    ¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede
+                                                                    deshacer.
                                                                 </DialogDescription>
                                                             </DialogHeader>
                                                             <DialogFooter>
                                                                 <DialogClose asChild>
                                                                     <Button variant="outline">Cancelar</Button>
                                                                 </DialogClose>
-                                                                <Button variant="destructive" onClick={() => deleteProduct(product.ProductoId)}>
+                                                                <Button variant="destructive" onClick={() => deleteUser(user.id)}>
                                                                     Eliminar
                                                                 </Button>
                                                             </DialogFooter>

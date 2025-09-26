@@ -51,7 +51,11 @@ class ProductRepository implements ProductRepositoryInterface
             'Precio' => $data['Precio'],
             'Stock' => $data['Stock'],
             'Imagen' => $data['Imagen'],
-            'CategoriaId' => $data['CategoriaId']
+            'CategoriaId' => $data['CategoriaId'],
+            'PrecioMayorista' => $data['PrecioMayorista'],
+            'MarcaId' => $data['MarcaId'],
+            'TamanoId' => $data['TamanoId'],
+            'MinimoMayorista' => $data['MinimoMayorista'],
         ]);
     }
 
@@ -69,7 +73,11 @@ class ProductRepository implements ProductRepositoryInterface
             'Precio' => $data['Precio'],
             'Stock' => $data['Stock'],
             'Imagen' => $data['Imagen'],
-            'CategoriaId' => $data['CategoriaId']
+            'CategoriaId' => $data['CategoriaId'],
+            'PrecioMayorista' => $data['PrecioMayorista'],
+            'MarcaId' => $data['MarcaId'],
+            'TamanoId' => $data['TamanoId'],
+            'MinimoMayorista' => $data['MinimoMayorista'],
         ]);
     }
 

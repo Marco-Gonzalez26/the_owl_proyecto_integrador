@@ -1,18 +1,19 @@
 <?php
 
-namespace Interfaces;
+namespace App\Interfaces;
 
-use Models\User;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
 interface UserRepositoryInterface
 {
-  public function getAll(): array;
-  public function getById(int $id): array;
+    public function getAll(): Collection;
+    public function getById(int $id): ?User;
 
-  public function getByUsername(string $username): ?User;
-  public function create(User $data): bool;
 
-  public function update(int $id, User $data): bool;
+    public function create(array $data): ?User;
 
-  public function delete(int $id): bool;
+    public function update(int $id, array $data): bool;
+
+    public function delete(int $id): bool;
 }

@@ -7,23 +7,24 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/admin-layout';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { AlertTriangle, DollarSign, Hash, Package, Save, Upload, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const breadcrumbs = [
     {
-        title: 'Dashboard',
-        href: '/the-owl/public/dashboard',
+        title: 'Panel de Control',
+        href: '/the-owl/public/panel',
     },
     {
         title: 'Productos',
-        href: '/the-owl/public/dashboard/products',
+        href: '/the-owl/public/panel/productos',
     },
     {
         title: 'Crear Producto',
-        href: '/the-owl/public/dashboard/products/create',
+        href: '/the-owl/public/panel/productos/crear',
     },
 ];
 export default function Create() {
-    const { categories } = usePage().props;
+    const { categories, brands } = usePage().props;
     const { data, setData, post, processing, errors } = useForm({
         Nombre: '',
         Descripcion: '',
@@ -31,7 +32,34 @@ export default function Create() {
         Stock: '',
         Imagen: '',
         CategoriaId: '',
+        MarcaId: '',
+        TamanoId: '',
+        PrecioMayorista: '',
+        MinimoMayorista: '',
     });
+    const [availableSizes, setAvailableSizes] = useState([]);
+    const fetchSizes = async () => {
+        try {
+            const response = await fetch(route('api.brands.sizes.by-brand', { brandId: data.MarcaId }));
+            const sizesData = await response.json();
+            setAvailableSizes(sizesData);
+
+            setData('TamanoId', '');
+        } catch (error) {
+            console.error('Error fetching sizes:', error);
+            setAvailableSizes([]);
+            setData('TamanoId', '');
+        }
+    };
+
+    useEffect(() => {
+        if (data.MarcaId) {
+            fetchSizes();
+        } else {
+            setAvailableSizes([]);
+            setData('TamanoId', '');
+        }
+    }, [data.MarcaId]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -39,7 +67,7 @@ export default function Create() {
             preserveState: true,
             preserveScroll: true,
             onSuccess: () => {
-                router.push({ url: route('dashboard') });
+                router.push({ url: route('products.index') });
             },
         });
     };
@@ -52,7 +80,7 @@ export default function Create() {
     };
 
     const selectedCategory = categories.find((cat) => cat.id === parseInt(data.CategoriaId));
-    console.log({data})
+    console.log({ data });
     const totalValue = data.Precio && data.Stock ? (parseFloat(data.Precio) * parseInt(data.Stock)).toFixed(2) : '0.00';
 
     return (
@@ -128,7 +156,55 @@ export default function Create() {
                                             </p>
                                         )}
                                     </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="marca">Marca</Label>
+                                        <Select value={data.MarcaId} onValueChange={(value) => setData('MarcaId', value)}>
+                                            <SelectTrigger className={errors.MarcaId ? 'border-red-500' : ''}>
+                                                <SelectValue placeholder="Seleccionar marca" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {brands.map((brand) => (
+                                                    <SelectItem key={brand.MarcaId} value={brand.MarcaId.toString()}>
+                                                        {brand.Nombre}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        {errors.MarcaId && (
+                                            <p className="flex items-center text-sm text-red-600">
+                                                <AlertTriangle className="mr-1 h-4 w-4" />
+                                                {errors.MarcaId}
+                                            </p>
+                                        )}
+                                    </div>
 
+                                    {/* Select de Tamaño */}
+                                    <div className="space-y-2">
+                                        <Label htmlFor="tamano">Tamaño</Label>
+                                        <Select
+                                            value={data.TamanoId}
+                                            onValueChange={(value) => setData('TamanoId', value)}
+                                            disabled={!data.MarcaId || availableSizes.length === 0}
+                                        >
+                                            <SelectTrigger className={errors.TamanoId ? 'border-red-500' : ''}>
+                                                <SelectValue placeholder="Seleccionar tamaño" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {availableSizes.map((size) => (
+                                                    <SelectItem key={size.TamanoId} value={size.TamanoId.toString()}>
+                                                        {size.Descripcion} - ({size.Valor}
+                                                        {size.unidad_medida.Abreviacion})
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        {errors.TamanoId && (
+                                            <p className="flex items-center text-sm text-red-600">
+                                                <AlertTriangle className="mr-1 h-4 w-4" />
+                                                {errors.TamanoId}
+                                            </p>
+                                        )}
+                                    </div>
                                     <div className="space-y-2 md:col-span-2">
                                         <Label htmlFor="descripcion">Descripción *</Label>
                                         <Textarea
@@ -186,7 +262,28 @@ export default function Create() {
                                             </p>
                                         )}
                                     </div>
-
+                                    <div className="space-y-2">
+                                        <Label htmlFor="precio">Precio Unitario Mayorista (USD) *</Label>
+                                        <div className="relative">
+                                            <DollarSign className="absolute top-3 left-3 h-4 w-4 text-neutral-400" />
+                                            <Input
+                                                id="precio"
+                                                type="number"
+                                                step="0.01"
+                                                min="0"
+                                                placeholder="0.00"
+                                                value={data.PrecioMayorista}
+                                                onChange={(e) => setData('PrecioMayorista', e.target.value)}
+                                                className={`pl-10 ${errors.Precio ? 'border-red-500 focus:ring-red-500' : ''}`}
+                                            />
+                                        </div>
+                                        {errors.Precio && (
+                                            <p className="flex items-center text-sm text-red-600">
+                                                <AlertTriangle className="mr-1 h-4 w-4" />
+                                                {errors.Precio}
+                                            </p>
+                                        )}
+                                    </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="stock">Stock Inicial *</Label>
                                         <div className="relative">
@@ -208,7 +305,27 @@ export default function Create() {
                                             </p>
                                         )}
                                     </div>
-
+                                    <div className="space-y-2">
+                                        <Label htmlFor="seller-minimum-qty">Minima Cantidad Mayorista *</Label>
+                                        <div className="relative">
+                                            <Hash className="absolute top-3 left-3 h-4 w-4 text-neutral-400" />
+                                            <Input
+                                                id="seller-minimum-qty"
+                                                type="number"
+                                                min="0"
+                                                placeholder="0"
+                                                value={data.MinimoMayorista}
+                                                onChange={(e) => setData('MinimoMayorista', e.target.value)}
+                                                className={`pl-10 ${errors.MinimoMayorista ? 'border-red-500 focus:ring-red-500' : ''}`}
+                                            />
+                                        </div>
+                                        {errors.MinimoMayorista && (
+                                            <p className="flex items-center text-sm text-red-600">
+                                                <AlertTriangle className="mr-1 h-4 w-4" />
+                                                {errors.MinimoMayorista}
+                                            </p>
+                                        )}
+                                    </div>
                                     {/* Resumen de cálculo */}
                                     {data.Precio && data.Stock && (
                                         <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 md:col-span-2">

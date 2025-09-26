@@ -12,7 +12,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Building, Handshake, Home, LogIn, Menu, Package, Tag } from 'lucide-react';
+import { Building, Home, LogIn, Menu, Package } from 'lucide-react';
 import AppLogo from './app-logo';
 import { Cart } from './cart';
 
@@ -26,11 +26,6 @@ const mainNavItems: NavItem[] = [
         title: 'Catálogo',
         href: '/the-owl/public/catalogo',
         icon: Package,
-    },
-    {
-        title: 'Mayoristas',
-        href: '/the-owl/public/catalogo/mayoristas',
-        icon: Handshake,
     },
     {
         title: 'Sobre nosotros',
@@ -51,7 +46,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
-    console.log('🛒 auth', auth);
+
     return (
         <>
             <div className="dark:bg-sidebar-background sticky top-0 right-0 left-0 z-50 border-b border-sidebar-border/80 bg-white">

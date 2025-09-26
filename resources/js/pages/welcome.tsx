@@ -1,4 +1,5 @@
 import { HeroBentoGrid } from '@/components/hero-bento-grid';
+import { HeroCarousel } from '@/components/hero-carousel';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import AppHeaderLayout from '@/layouts/app/app-header-layout';
@@ -49,11 +50,11 @@ export default function Welcome() {
             <Head title="Bienvenido a The Owl"></Head>
 
             <div className="min-h-screen bg-white dark:bg-[#0a0a0a]">
-                <section className="relative h-screen overflow-hidden">
+                {/* <section className="relative h-screen overflow-hidden">
                     <div className="flex h-full w-full items-center justify-center">
-                        <HeroBentoGrid items={items} />
+                        <HeroCarousel items={items} />
                     </div>
-                </section>
+                </section> */}
 
                 <section className="py-16 lg:py-24">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
